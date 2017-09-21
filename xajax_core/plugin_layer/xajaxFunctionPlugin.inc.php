@@ -144,7 +144,7 @@ class xajaxFunctionPlugin extends xajaxRequestPlugin implements RequestIface
 	 *
 	 * @return \xajaxRequest
 	 */
-	public function registerRequest(array $aArgs = [])
+	public function registerRequest(array $aArgs = []): \xajaxRequest
 	{
 		if (0 < count($aArgs))
 		{
@@ -292,8 +292,7 @@ class xajaxFunctionPlugin extends xajaxRequestPlugin implements RequestIface
 		mixed - True when the request has been processed successfully.
 			An error message when an error has occurred.
 	*/
-	public
-	function processRequest()
+	public function processRequest()
 	{
 		if (null === $this->sRequestedFunction)
 		{
@@ -319,10 +318,12 @@ class xajaxFunctionPlugin extends xajaxRequestPlugin implements RequestIface
 	}
 
 	/**
+	 * Own Plugin Name
+	 *
 	 * @return string
+	 * @since 7.0
 	 */
-	public
-	function getName(): string
+	public function getName(): string
 	{
 		return 'function';
 	}

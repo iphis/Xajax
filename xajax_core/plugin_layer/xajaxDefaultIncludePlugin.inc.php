@@ -31,7 +31,7 @@ use Xajax\plugin_layer\RequestIface;
 
 final class xajaxIncludeClientScriptPlugin extends xajaxRequestPlugin implements RequestIface
 {
-	public function xajaxIncludeClientScriptPlugin()
+	public function __construct()
 	{
 
 	}
@@ -130,7 +130,10 @@ final class xajaxIncludeClientScriptPlugin extends xajaxRequestPlugin implements
 	}
 
 	/**
+	 * Own Plugin Name
+	 *
 	 * @return string
+	 * @since 7.0
 	 */
 	public function getName(): string
 	{
@@ -144,9 +147,10 @@ final class xajaxIncludeClientScriptPlugin extends xajaxRequestPlugin implements
 	 *
 	 * @param array $aArgs
 	 *
-	 * @return bool
+	 * @return \xajaxRequest
+	 * @throws \BadFunctionCallException
 	 */
-	public function registerRequest(array $aArgs = [])
+	public function registerRequest(array $aArgs = []): \xajaxRequest
 	{
 		throw new BadFunctionCallException('xajaxIncludeClientScriptPlugin::registerRequest is not need to be called');
 	}

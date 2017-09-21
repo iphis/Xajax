@@ -32,7 +32,7 @@ if (!defined('XAJAX_CALLABLE_OBJECT'))
 }
 
 //SkipAIO
-require dirname(__FILE__) . '/support/xajaxCallableObject.inc.php';
+require __DIR__ . '/support/xajaxCallableObject.inc.php';
 //EndSkipAIO
 
 /*
@@ -184,7 +184,7 @@ final class xajaxCallableObjectPlugin extends xajaxRequestPlugin implements Requ
 		return false;
 	}
 
-	function generateHash()
+	public function generateHash()
 	{
 		$sHash = '';
 		foreach (array_keys($this->aCallableObjects) as $sKey)
@@ -268,7 +268,10 @@ final class xajaxCallableObjectPlugin extends xajaxRequestPlugin implements Requ
 	}
 
 	/**
+	 * Own Plugin Name
+	 *
 	 * @return string
+	 * @since 7.0
 	 */
 	public function getName(): string
 	{
@@ -282,9 +285,10 @@ final class xajaxCallableObjectPlugin extends xajaxRequestPlugin implements Requ
 	 *
 	 * @param array $aArgs
 	 *
-	 * @return bool
+	 * @return \xajaxRequest
+	 * @throws \InvalidArgumentException
 	 */
-	public function registerRequest(array $aArgs = [])
+	public function registerRequest(array $aArgs = []): \xajaxRequest
 	{
 		if (0 < count($aArgs))
 		{
@@ -294,9 +298,9 @@ final class xajaxCallableObjectPlugin extends xajaxRequestPlugin implements Requ
 //SkipDebug
 			if (false === is_object($xco))
 			{
-				trigger_error("To register a callable object, please provide an instance of the desired class.", E_USER_WARNING);
+				trigger_error('To register a callable object, please provide an instance of the desired class.', E_USER_WARNING);
 
-				return false;
+				throw new InvalidArgumentException('To register a callable object, please provide an instance of the desired class.');
 			}
 //EndSkipDebug
 
@@ -311,7 +315,7 @@ final class xajaxCallableObjectPlugin extends xajaxRequestPlugin implements Requ
 				{
 					foreach ($aArgs[1] as $sKey => $aValue)
 					{
-						foreach ($aValue as $sName => $sValue)
+						foreach ($v = (array) $aValue as $sName => $sValue)
 						{
 							$xco->configure($sKey, $sName, $sValue);
 						}
@@ -321,10 +325,11 @@ final class xajaxCallableObjectPlugin extends xajaxRequestPlugin implements Requ
 
 			$this->aCallableObjects[] = $xco;
 
-			return $xco->generateRequests($this->sXajaxPrefix);
+// @todo check that is possible to get only on Object Back
+			return $xco;// $xco->generateRequests($this->sXajaxPrefix);
 		}
 
-		return false;
+		throw new InvalidArgumentException('Wrong ParameterCount to register an xajaxCallableObjectPlugin');
 	}
 }
 

@@ -259,9 +259,7 @@ class xajaxResponse
 
 		if (false === $objPlugin)
 		{
-			$bReturn = false;
-
-			return $bReturn;
+			return false;
 		}
 
 		$objPlugin->setResponse($this);

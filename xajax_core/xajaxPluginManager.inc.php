@@ -84,12 +84,6 @@ final class xajaxPluginManager
 	private $nResponseQueueSize;
 	private $sDebugOutputID;
 	/**
-	 * Temporär to check correct implemention of plugin Class
-	 *
-	 * @var string
-	 */
-	private $pluginInterfaceName = 'Xajax\plugin_layer\RequestIface';
-	/**
 	 * XML or JSOM
 	 *
 	 * @var string
@@ -304,7 +298,7 @@ final class xajaxPluginManager
 			{
 				return true;
 			}
-			else if (is_string($mResult))
+			if (is_string($mResult))
 			{
 				return $mResult;
 			}
@@ -376,106 +370,106 @@ final class xajaxPluginManager
 		{
 			if (true === $mValue)
 			{
-				$this->sDefer = "defer ";
+				$this->sDefer = 'defer ';
 			}
 			else
 			{
-				$this->sDefer = "";
+				$this->sDefer = '';
 			}
 		}
 		else if ('requestURI' === $sName)
 		{
 			$this->setSRequestURI((string) $mValue);
 		}
-		else if ("statusMessages" == $sName)
+		else if ('statusMessages' === $sName)
 		{
 			if (true === $mValue)
 			{
-				$this->sStatusMessages = "true";
+				$this->sStatusMessages = 'true';
 			}
 			else
 			{
-				$this->sStatusMessages = "false";
+				$this->sStatusMessages = 'false';
 			}
 		}
-		else if ("waitCursor" == $sName)
+		else if ('waitCursor' === $sName)
 		{
 			if (true === $mValue)
 			{
-				$this->sWaitCursor = "true";
+				$this->sWaitCursor = 'true';
 			}
 			else
 			{
-				$this->sWaitCursor = "false";
+				$this->sWaitCursor = 'false';
 			}
 		}
-		else if ("version" == $sName)
+		else if ('version' === $sName)
 		{
 			$this->sVersion = $mValue;
 		}
-		else if ("defaultMode" == $sName)
+		else if ('defaultMode' === $sName)
 		{
-			if ("asynchronous" == $mValue || "synchronous" == $mValue)
+			if ('asynchronous' === $mValue || 'synchronous' === $mValue)
 			{
 				$this->sDefaultMode = $mValue;
 			}
 		}
-		else if ("defaultMethod" == $sName)
+		else if ('defaultMethod' === $sName)
 		{
-			if ("POST" == $mValue || "GET" == $mValue)        // W3C: Method is case sensitive
+			if ('POST' === $mValue || 'GET' === $mValue)        // W3C: Method is case sensitive
 			{
 				$this->sDefaultMethod = $mValue;
 			}
 		}
-		else if ("debug" == $sName)
+		else if ('debug' === $sName)
 		{
 			if (true === $mValue || false === $mValue)
 			{
 				$this->bDebug = $mValue;
 			}
 		}
-		else if ("verboseDebug" == $sName)
+		else if ('verboseDebug' === $sName)
 		{
 			if (true === $mValue || false === $mValue)
 			{
 				$this->bVerboseDebug = $mValue;
 			}
 		}
-		else if ("scriptLoadTimeout" == $sName)
+		else if ('scriptLoadTimeout' === $sName)
 		{
 			$this->nScriptLoadTimeout = $mValue;
 		}
-		else if ("useUncompressedScripts" == $sName)
+		else if ('useUncompressedScripts' === $sName)
 		{
 			if (true === $mValue || false === $mValue)
 			{
 				$this->bUseUncompressedScripts = $mValue;
 			}
 		}
-		else if ('deferScriptGeneration' == $sName)
+		else if ('deferScriptGeneration' === $sName)
 		{
 			if (true === $mValue || false === $mValue)
 			{
 				$this->bDeferScriptGeneration = $mValue;
 			}
-			else if ('deferred' == $mValue)
+			else if ('deferred' === $mValue)
 			{
 				$this->bDeferScriptGeneration = $mValue;
 			}
 		}
-		else if ('language' == $sName)
+		else if ('language' === $sName)
 		{
 			$this->sLanguage = $mValue;
 		}
-		else if ('responseQueueSize' == $sName)
+		else if ('responseQueueSize' === $sName)
 		{
 			$this->nResponseQueueSize = $mValue;
 		}
-		else if ('debugOutputID' == $sName)
+		else if ('debugOutputID' === $sName)
 		{
 			$this->sDebugOutputID = $mValue;
 		}
-		else if ('responseType' == $sName)
+		else if ('responseType' === $sName)
 		{
 			$this->setSResponseType($mValue);
 		}
@@ -494,6 +488,7 @@ final class xajaxPluginManager
 	/**
 	 * @param array $aArgs
 	 *
+	 * @todo check return type
 	 * @return bool
 	 */
 	public function registerRequest(array $aArgs = []): bool
@@ -586,9 +581,9 @@ final class xajaxPluginManager
 	 *
 	 * @param string $name
 	 *
-	 * @return \xajaxRequestPlugin
+	 * @return RequestIface
 	 */
-	public function getPlugin(string $name = ''): \xajaxRequestPlugin
+	public function getPlugin(string $name = ''): RequestIface
 	{
 		return $this->getRegistrar($name);
 	}
@@ -863,7 +858,7 @@ final class xajaxPluginManager
 		}
 	}
 
-	private function generateHash()
+	private function generateHash(): string
 	{
 		$aKeys = array_keys($this->aClientScriptGenerators);
 		sort($aKeys);
@@ -909,9 +904,8 @@ final class xajaxPluginManager
 				return $this->aResponsePlugins[$sKey];
 			}
 		}
-		$bFailure = false;
 
-		return $bFailure;
+		return false;
 	}
 
 	/*
@@ -932,15 +926,13 @@ final class xajaxPluginManager
 		sort($aKeys);
 		foreach ($aKeys as $sKey)
 		{
-			if (get_class($this->aRequestPlugins[$sKey]) == $sName)
+			if (get_class($this->aRequestPlugins[$sKey]) === $sName)
 			{
 				return $this->aRequestPlugins[$sKey];
 			}
 		}
 
-		$bFailure = false;
-
-		return $bFailure;
+		return false;
 	}
 
 	/**
@@ -1000,6 +992,7 @@ final class xajaxPluginManager
 	 * @param string $name
 	 *
 	 * @return \Xajax\plugin_layer\RequestIface
+	 * @throws InvalidArgumentException
 	 */
 	private function getRegistrar(string $name = ''): \Xajax\plugin_layer\RequestIface
 	{

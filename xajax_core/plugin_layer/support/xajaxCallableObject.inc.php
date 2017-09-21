@@ -121,7 +121,7 @@ final class xajaxCallableObject
 			$bInclude = true;
 			// exclude magic __call, __construct, __destruct methods
 			if (2 < strlen($sMethodName))
-				if ("__" == substr($sMethodName, 0, 2))
+				if ("__" === substr($sMethodName, 0, 2))
 					$bInclude = false;
 			// exclude constructor
 			if ($sClass == $sMethodName)

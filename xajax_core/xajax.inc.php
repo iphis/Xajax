@@ -567,7 +567,7 @@ final class xajax
 	 *
 	 * @return \xajaxPluginManager
 	 */
-	private function setObjPluginManager(\xajaxPluginManager $objPluginManager)
+	private function setObjPluginManager(\xajaxPluginManager $objPluginManager): \xajaxPluginManager
 	{
 		return $this->objPluginManager = $objPluginManager;
 	}
@@ -577,9 +577,9 @@ final class xajax
 	 *
 	 * @param string $string
 	 *
-	 * @return \xajaxRequestPlugin
+	 * @return \Xajax\plugin_layer\RequestIface
 	 */
-	public function getPlugin($string = '')
+	public function getPlugin($string = ''): \Xajax\plugin_layer\RequestIface
 	{
 		return $this->getObjPluginManager()->getPlugin($string);
 	}

@@ -65,7 +65,7 @@ class xajaxScriptPlugin extends xajaxRequestPlugin implements RequestIface
 		GET data (parameters passed on the request URI) and store them
 		for later use.
 	*/
-	function xajaxScriptPlugin()
+	public function __construct()
 	{
 		$this->sRequestURI            = '';
 		$this->bDeferScriptGeneration = false;
@@ -100,7 +100,7 @@ class xajaxScriptPlugin extends xajaxRequestPlugin implements RequestIface
 		- <deferScriptValidateHash> (boolean): A flag that indicates whether
 			or not the script hash should be validated.
 	*/
-	function configure($sName, $mValue)
+	public function configure($sName, $mValue)
 	{
 		if ('requestURI' == $sName)
 		{
@@ -139,7 +139,7 @@ class xajaxScriptPlugin extends xajaxRequestPlugin implements RequestIface
 		request URI contained an appropriate hash code and script deferral 
 		is in effect.
 	*/
-	function generateClientScript()
+	public function generateClientScript()
 	{
 	}
 
@@ -150,13 +150,13 @@ class xajaxScriptPlugin extends xajaxRequestPlugin implements RequestIface
 		process the current request.  This will return true when the
 		requestURI contains an appropriate hash code.
 	*/
-	function canProcessRequest()
+	public function canProcessRequest()
 	{
 		return false;
 	}
 
 	//todo: clean
-	function _getSections($sType)
+	public function _getSections($sType)
 	{
 		/*	$objPluginManager = xajaxPluginManager::getInstance();
 
@@ -205,7 +205,7 @@ class xajaxScriptPlugin extends xajaxRequestPlugin implements RequestIface
 		deferral is in effect.  If script deferral is disabled, this function returns 
 		without performing any functions.
 	*/
-	function processRequest()
+	public function processRequest()
 	{
 		if ($this->canProcessRequest())
 		{
@@ -244,6 +244,8 @@ class xajaxScriptPlugin extends xajaxRequestPlugin implements RequestIface
 	}
 
 	/**
+	 * Own Plugin Name
+	 *
 	 * @return string
 	 * @since 7.0
 	 */
@@ -259,9 +261,9 @@ class xajaxScriptPlugin extends xajaxRequestPlugin implements RequestIface
 	 *
 	 * @param array $aArgs
 	 *
-	 * @return bool
+	 * @return \xajaxRequest
 	 */
-	public function registerRequest(array $aArgs = [])
+	public function registerRequest(array $aArgs = []): \xajaxRequest
 	{
 		throw new BadFunctionCallException('xajaxScriptPlugin::registerRequest is not need to be called');
 	}

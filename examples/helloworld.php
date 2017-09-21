@@ -79,10 +79,14 @@ function setColor($sColor)
 	- <setColor>
 */
 
-/** @var \xajaxFunctionPlugin $xajaxRequestPluginFunction */
+/** @var \Xajax\plugin_layer\RequestIface $xajaxRequestPluginFunction */
 $xajaxRequestPluginFunction = $xajax->getPlugin('function');
 $reqHelloWorldMixed         = $xajaxRequestPluginFunction->registerRequest((array) 'helloWorld');
 
+// or direct
+//$reqHelloWorldMixed= $xajax->getPlugin('function')->registerRequest((array) 'helloWorld');
+
+// old Way
 //$reqHelloWorldMixed = $xajax->register(XAJAX_FUNCTION, 'helloWorld');
 $reqHelloWorldMixed->setParameter(0, XAJAX_JS_VALUE, 0);
 
@@ -128,9 +132,9 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
 		/* <![CDATA[ */
 		window.onload = function(){
 			// call the helloWorld function to populate the div on load
-		<?php $reqHelloWorldAllCaps->printScript(); ?>;
+		<?php $reqHelloWorldAllCaps->printScript(); ?>
 			// call the setColor function on load
-		<?php $reqSetColor->printScript(); ?>;
+		<?php $reqSetColor->printScript(); ?>
 		}
 		/* ]]> */
 	</script>
@@ -144,7 +148,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
 		<button onclick='<?php $reqHelloWorldAllCaps->printScript(); ?>'>CLICK ME</button>
 		<label>Change Color
 			<select id="colorselect" name="colorselect"
-					onchange='<?php $reqSetColor->printScript(); ?>;'>
+					onchange='<?php $reqSetColor->printScript(); ?>'>
 				<option value="black" selected="selected">Black</option>
 				<option value="red">Red</option>
 				<option value="green">Green</option>

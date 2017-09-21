@@ -16,6 +16,8 @@ declare(strict_types=1);
 
 namespace Xajax\plugin_layer;
 
+use xajaxRequest;
+
 /**
  * Interface Iface
  *
@@ -35,7 +37,7 @@ interface RequestIface
 	 *
 	 * @param array $aArgs
 	 *
-	 * @return bool
+	 * @return xajaxRequest
 	 */
-	public function registerRequest(array $aArgs = []);
+	public function registerRequest(array $aArgs = []): xajaxRequest;
 }
