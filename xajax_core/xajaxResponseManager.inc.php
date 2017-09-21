@@ -26,6 +26,7 @@
 	of contact for working with <xajaxResponse> objects as well as 
 	<xajaxCustomResponse> objects.
 */
+
 final class xajaxResponseManager
 {
 	/*
@@ -35,22 +36,19 @@ final class xajaxResponseManager
 		once the request processing phase is complete.
 	*/
 	private $objResponse;
-	
 	/*
 		String: sCharacterEncoding
 	*/
 	private $sCharacterEncoding;
-	
 	/*
 		Boolean: bOutputEntities
 	*/
 	private $bOutputEntities;
-	
 	/*
 		Array: aDebugMessages
 	*/
 	private $aDebugMessages;
-	
+
 	/*
 		Function: xajaxResponseManager
 		
@@ -58,10 +56,10 @@ final class xajaxResponseManager
 	*/
 	private function __construct()
 	{
-		$this->objResponse = NULL;
-		$this->aDebugMessages = array();
+		$this->objResponse    = null;
+		$this->aDebugMessages = [];
 	}
-	
+
 	/*
 		Function: getInstance
 		
@@ -71,12 +69,14 @@ final class xajaxResponseManager
 	public static function &getInstance()
 	{
 		static $obj;
-		if (!$obj) {
+		if (!$obj)
+		{
 			$obj = new xajaxResponseManager();
 		}
+
 		return $obj;
 	}
-	
+
 	/*
 		Function: configure
 		
@@ -93,30 +93,33 @@ final class xajaxResponseManager
 		if ('characterEncoding' == $sName)
 		{
 			$this->sCharacterEncoding = $mValue;
-			
+
 			if (isset($this->objResponse))
+			{
 				$this->objResponse->setCharacterEncoding($this->sCharacterEncoding);
+			}
 		}
 		else if ('contentType' == $sName)
 		{
 			if (isset($this->objResponse))
+			{
 				$this->objResponse->setContentType($mValue);
+			}
 		}
 		else if ('outputEntities' == $sName)
 		{
 			if (true === $mValue || false === $mValue)
 			{
 				$this->bOutputEntities = $mValue;
-				
+
 				if (isset($this->objResponse))
+				{
 					$this->objResponse->setOutputEntities($this->bOutputEntities);
+				}
 			}
 		}
 		$this->aSettings[$sName] = $mValue;
-	
 	}
-
-
 
 	/*
 		Function: getConfiguration
@@ -132,14 +135,17 @@ final class xajaxResponseManager
 		
 		$mValue : (mixed):  The value of the setting if set, null otherwise.
 	*/
-	
+
 	public function getConfiguration($sName)
 	{
 		if (isset($this->aSettings[$sName]))
+		{
 			return $this->aSettings[$sName];
-		return NULL;
+		}
+
+		return null;
 	}
-	
+
 	/*
 		Function: clear
 		
@@ -148,9 +154,9 @@ final class xajaxResponseManager
 	*/
 	public function clear()
 	{
-		$this->objResponse = NULL;
+		$this->objResponse = null;
 	}
-	
+
 	/*
 		Function: append
 		
@@ -169,40 +175,59 @@ final class xajaxResponseManager
 	*/
 	public function append($mResponse)
 	{
-		if ( $mResponse instanceof xajaxResponse ) {
-			if (NULL == $this->objResponse) {
+		if ($mResponse instanceof xajaxResponse)
+		{
+			if (null === $this->objResponse)
+			{
 				$this->objResponse = $mResponse;
-			} else if ( $this->objResponse instanceof xajaxResponse ) {
-				if ($this->objResponse != $mResponse)
+			}
+			else if ($this->objResponse instanceof xajaxResponse)
+			{
+				if ($this->objResponse !== $mResponse)
+				{
 					$this->objResponse->appendResponse($mResponse);
-			} else {
+				}
+			}
+			else
+			{
 				$objLanguageManager = xajaxLanguageManager::getInstance();
 				$this->debug(
-					$objLanguageManager->getText('XJXRM:MXRTERR') 
-					. get_class($this->objResponse) 
-					. ')'
-					);
+				    $objLanguageManager->getText('XJXRM:MXRTERR')
+				    . get_class($this->objResponse)
+				    . ')'
+				);
 			}
-		} else if ( $mResponse instanceof xajaxCustomResponse ) {
-			if (NULL == $this->objResponse) {
+		}
+		else if ($mResponse instanceof xajaxCustomResponse)
+		{
+			if (null === $this->objResponse)
+			{
 				$this->objResponse = $mResponse;
-			} else if ( $this->objResponse instanceof xajaxCustomResponse ) {
-				if ($this->objResponse != $mResponse)
+			}
+			else if ($this->objResponse instanceof xajaxCustomResponse)
+			{
+				if ($this->objResponse !== $mResponse)
+				{
 					$this->objResponse->appendResponse($mResponse);
-			} else {
+				}
+			}
+			else
+			{
 				$objLanguageManager = xajaxLanguageManager::getInstance();
 				$this->debug(
-					$objLanguageManager->getText('XJXRM:MXRTERR') 
-					. get_class($this->objResponse) 
-					. ')'
-					);
+				    $objLanguageManager->getText('XJXRM:MXRTERR')
+				    . get_class($this->objResponse)
+				    . ')'
+				);
 			}
-		} else {
+		}
+		else
+		{
 			$objLanguageManager = xajaxLanguageManager::getInstance();
 			$this->debug($objLanguageManager->getText('XJXRM:IRERR'));
 		}
 	}
-	
+
 	/*
 		Function: debug
 		
@@ -218,7 +243,7 @@ final class xajaxResponseManager
 	{
 		$this->aDebugMessages[] = $sMessage;
 	}
-	
+
 	/*
 		Function: send
 		
@@ -226,14 +251,17 @@ final class xajaxResponseManager
 	*/
 	public function send()
 	{
-		if (NULL != $this->objResponse) {
+		if (null != $this->objResponse)
+		{
 			foreach ($this->aDebugMessages as $sMessage)
+			{
 				$this->objResponse->debug($sMessage);
-			$this->aDebugMessages = array();
+			}
+			$this->aDebugMessages = [];
 			$this->objResponse->printOutput();
 		}
 	}
-	
+
 	/*
 		Function: getCharacterEncoding
 		
@@ -246,7 +274,7 @@ final class xajaxResponseManager
 	{
 		return $this->sCharacterEncoding;
 	}
-	
+
 	/*
 		Function: getOutputEntities
 		

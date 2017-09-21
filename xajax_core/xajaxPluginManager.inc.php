@@ -362,11 +362,11 @@ final class xajaxPluginManager
 		{
 			$this->sJsURI = $mValue;
 		}
-		else if ("javascript files" == $sName)
+		else if ('javascript files' === $sName)
 		{
 			$this->aJsFiles = array_merge($this->aJsFiles, $mValue);
 		}
-		else if ("scriptDefferal" == $sName)
+		else if ('scriptDefferal' === $sName)
 		{
 			if (true === $mValue)
 			{

@@ -184,7 +184,7 @@ final class xajax
 			for calls back to the server.  If empty, xajax fills in the current
 			URI that initiated this request.
 	*/
-	public function __construct($configuration = [])
+	public function __construct(array $configuration = [])
 	{
 		$this->bErrorHandler     = false;
 		$this->aProcessingEvents = [];
@@ -325,15 +325,9 @@ final class xajax
 		<xajaxResponse> : A <xajaxResponse> object which can be used to return
 			response commands.  See also the <xajaxResponseManager> class.
 	*/
-	public static function &getGlobalResponse(): \xajaxResponse
+	public static function getGlobalResponse(): \xajaxResponse
 	{
-		static $obj;
-		if (!$obj)
-		{
-			$obj = new xajaxResponse();
-		}
-
-		return $obj;
+		return xajaxResponse::getInstance();
 	}
 
 	/*
@@ -357,7 +351,7 @@ final class xajax
 	 * @return bool
 	 * @since 7.0
 	 */
-	public function registerRequest($sType, $mArg)
+	public function registerRequest($sType, $mArg): bool
 	{
 		$aArgs = func_get_args();
 		$nArgs = func_num_args();
@@ -741,7 +735,7 @@ final class xajax
 			if ($this->bErrorHandler)
 			{
 				$GLOBALS['xajaxErrorHandlerText'] = '';
-				set_error_handler("xajaxErrorHandler");
+				set_error_handler('xajaxErrorHandler');
 			}
 
 			$mResult = true;
@@ -1203,7 +1197,7 @@ final class xajax
 		}
 	}
 
-	public function _compile($sFolder = null, $bWriteFile = true)
+	public function _compile($sFolder = null, $bWriteFile = true): string
 	{
 		if (null === $sFolder)
 		{

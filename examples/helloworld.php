@@ -141,7 +141,6 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
 </head>
 <body style="text-align:center;">
 <div id="div1">&#160;</div>
-<br />
 <form action="javascript:void(null)">
 	<fieldset>
 		<button onclick='<?php $reqHelloWorldMixed->printScript(); ?>'>Click Me</button>

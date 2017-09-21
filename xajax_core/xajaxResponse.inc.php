@@ -40,7 +40,7 @@
 
 class xajaxResponse
 {
-	private static $instance;
+	private static $instances;
 	/*
 		Array: aCommands
 		
@@ -114,26 +114,44 @@ class xajaxResponse
 	 * Getting a FactoryPattern instance
 	 *
 	 * @since 7.0
+	 *
+	 * @param int $name
+	 *
 	 * @return \xajaxResponse
 	 */
-	public static function getInstance()
+	public static function getInstance($name = 50): \xajaxResponse
 	{
-		if (!self::$instance instanceof xajaxResponse)
+		$instances = self::getInstances();
+		if (!array_key_exists($name, $instances))
 		{
-			self::setInstance(new xajaxResponse());
+			$instances[$name] = new self;
+			self::setInstances($instances);
 		}
 
-		return self::$instance;
+		return self::$instances[$name];
 	}
 
 	/**
+	 * xajaxResponse Stack
+	 *
+	 * @todo on final response Rendering all responses will be enqueued into final
+	 * @return array
+	 */
+	private static function getInstances(): array
+	{
+		return (array) self::$instances;
+	}
+
+	/**
+	 * xajaxResponse Stack
+	 *
 	 * @since 7.0
 	 *
-	 * @param \xajaxResponse $instance
+	 * @param array $instances
 	 */
-	private static function setInstance(self $instance)
+	private static function setInstances(array $instances = [])
 	{
-		self::$instance = $instance;
+		self::$instances = $instances;
 	}
 
 	/**
@@ -1519,7 +1537,7 @@ class xajaxResponse
 		
 		string : The content type.
 	*/
-	public function getContentType()
+	public function getContentType(): string
 	{
 		return $this->sContentType;
 	}
@@ -1588,12 +1606,12 @@ class xajaxResponse
 	public function _sendHeaders()
 	{
 		$objArgumentManager = xajaxArgumentManager::getInstance();
-		if (XAJAX_METHOD_GET == $objArgumentManager->getRequestMethod())
+		if (XAJAX_METHOD_GET === $objArgumentManager->getRequestMethod())
 		{
-			header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
-			header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-			header("Cache-Control: no-cache, must-revalidate");
-			header("Pragma: no-cache");
+			header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+			header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+			header('Cache-Control: no-cache, must-revalidate');
+			header('Pragma: no-cache');
 		}
 
 		$sCharacterSet = '';
@@ -1614,7 +1632,7 @@ class xajaxResponse
 		
 		integer : The number of commands in the response.
 	*/
-	public function getCommandCount()
+	public function getCommandCount(): int
 	{
 		return count($this->aCommands);
 	}
@@ -1632,9 +1650,15 @@ class xajaxResponse
 			of the list.
 			
 	*/
-	public function appendResponse($mCommands, $bBefore = false)
+	/**
+	 * todo check array is $mCommands
+	 *
+	 * @param \xajaxResponse|array $mCommands
+	 * @param bool                 $bBefore
+	 */
+	public function appendResponse($mCommands = null, $bBefore = false)
 	{
-		if ($mCommands instanceof xajaxResponse)
+		if ($mCommands instanceof self)
 		{
 			$this->returnValue = $mCommands->returnValue;
 
@@ -1689,7 +1713,7 @@ class xajaxResponse
 		
 		object : The <xajaxResponse> object.
 	*/
-	public function addPluginCommand($objPlugin, $aAttributes, $mData)
+	public function addPluginCommand($objPlugin, $aAttributes, $mData): \xajaxResponse
 	{
 		$aAttributes['plg'] = $objPlugin->getName();
 
@@ -1714,7 +1738,7 @@ class xajaxResponse
 	*/
 	public function addCommand($aAttributes, $mData)
 	{
-		if ('text/xml' == $this->getContentType())
+		if ('text/xml' === $this->getContentType())
 		{
 			$mData = $this->_encodeArray($mData);
 		};
@@ -1724,13 +1748,13 @@ class xajaxResponse
 		{
 			if ($aLastCommand = array_pop($this->aCommands))
 			{
-				if ($aLastCommand['cmd'] == $aAttributes['cmd'])
+				if ($aLastCommand['cmd'] === $aAttributes['cmd'])
 				{
-					if ('js' == $aLastCommand['cmd'])
+					if ('js' === $aLastCommand['cmd'])
 					{
 						$mData = $aLastCommand['data'] . '; ' . $mData;
 					}
-					elseif ('ap' == $aLastCommand['cmd'] && $aLastCommand['id'] == $aAttributes['id'] && $aLastCommand['prop'] == $aAttributes['prop'])
+					elseif ('ap' === $aLastCommand['cmd'] && $aLastCommand['id'] === $aAttributes['id'] && $aLastCommand['prop'] === $aAttributes['prop'])
 					{
 						$mData = $aLastCommand['data'] . ' ' . $mData;
 					}
