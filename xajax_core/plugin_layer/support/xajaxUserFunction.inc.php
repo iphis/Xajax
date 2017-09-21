@@ -28,6 +28,7 @@
 	convert to using this class when you wish to register external functions or 
 	to specify call options as well.
 */
+
 final class xajaxUserFunction
 {
 	/*
@@ -38,21 +39,18 @@ final class xajaxUserFunction
 		call options from what was already registered.
 	*/
 	private $sAlias;
-	
 	/*
 		Object: uf
 		
 		A string or array which defines the function to be registered.
 	*/
 	private $uf;
-	
 	/*
 		String: sInclude
 		
 		The path and file name of the include file that contains the function.
 	*/
 	private $sInclude;
-	
 	/*
 		Array: aConfiguration
 		
@@ -60,7 +58,7 @@ final class xajaxUserFunction
 		browser curing client script generation.
 	*/
 	private $aConfiguration;
-	
+
 	/*
 		Function: xajaxUserFunction
 		
@@ -106,32 +104,34 @@ final class xajaxUserFunction
 				
 			$xajax->register(XAJAX_FUNCTION, $myUserFunction);				
 	*/
-	public function xajaxUserFunction($uf) // /*deprecated parameters */ $sInclude=NULL, $aConfiguration=array())
+	public function __construct($uf) // /*deprecated parameters */ $sInclude=NULL, $aConfiguration=array())
 	{
-		$this->sAlias = '';
-		$this->uf = $uf;
-		$this->aConfiguration = array();
+		$this->sAlias         = '';
+		$this->uf             = $uf;
+		$this->aConfiguration = [];
 
-/*deprecated parameters */
+		/*deprecated parameters */
 //		$this->sInclude = $sInclude;
 //		foreach ($aConfiguration as $sKey => $sValue)
 //			$this->configure($sKey, $sValue);
-		
+
 		if (is_array($this->uf) && 2 < count($this->uf))
 		{
 			$this->sAlias = $this->uf[0];
-			$this->uf = array_slice($this->uf, 1);
+			$this->uf     = array_slice($this->uf, 1);
 		}
 
 //SkipDebug
 		if (is_array($this->uf) && 2 != count($this->uf))
+		{
 			trigger_error(
-				'Invalid function declaration for xajaxUserFunction.',
-				E_USER_ERROR
-				);
+			    'Invalid function declaration for xajaxUserFunction.',
+			    E_USER_ERROR
+			);
+		}
 //EndSkipDebug
 	}
-	
+
 	/*
 		Function: getName
 		
@@ -145,10 +145,13 @@ final class xajaxUserFunction
 	{
 		// Do not use sAlias here!
 		if (is_array($this->uf))
+		{
 			return $this->uf[1];
+		}
+
 		return $this->uf;
 	}
-	
+
 	/*
 		Function: configure
 		
@@ -157,13 +160,19 @@ final class xajaxUserFunction
 	public function configure($sName, $sValue)
 	{
 		if ('alias' == $sName)
+		{
 			$this->sAlias = $sValue;
+		}
 		if ('include' == $sName)
+		{
 			$this->sInclude = $sValue;
+		}
 		else
+		{
 			$this->aConfiguration[$sName] = $sValue;
+		}
 	}
-	
+
 	/*
 		Function: generateRequest
 		
@@ -175,10 +184,13 @@ final class xajaxUserFunction
 	{
 		$sAlias = $this->getName();
 		if (0 < strlen($this->sAlias))
+		{
 			$sAlias = $this->sAlias;
+		}
+
 		return new xajaxRequest("{$sXajaxPrefix}{$sAlias}");
 	}
-	
+
 	/*
 		Function: generateClientScript
 		
@@ -190,9 +202,11 @@ final class xajaxUserFunction
 	public function generateClientScript($sXajaxPrefix)
 	{
 		$sFunction = $this->getName();
-		$sAlias = $sFunction;
+		$sAlias    = $sFunction;
 		if (0 < strlen($this->sAlias))
+		{
 			$sAlias = $this->sAlias;
+		}
 		echo "{$sXajaxPrefix}{$sAlias} = function() { ";
 		echo "return xajax.request( ";
 		echo "{ xjxfun: '{$sFunction}' }, ";
@@ -200,7 +214,9 @@ final class xajaxUserFunction
 
 		$sSeparator = ", ";
 		foreach ($this->aConfiguration as $sKey => $sValue)
+		{
 			echo "{$sSeparator}{$sKey}: {$sValue}";
+		}
 
 		echo " } ); ";
 		echo "};\n";
@@ -214,16 +230,16 @@ final class xajaxUserFunction
 		function, including an external file if needed and passing along 
 		the specified arguments.
 	*/
-	public function call($aArgs=array())
+	public function call($aArgs = [])
 	{
 		$objResponseManager = xajaxResponseManager::getInstance();
-		
-		if (NULL != $this->sInclude)
+
+		if (null != $this->sInclude)
 		{
 			ob_start();
 			require_once $this->sInclude;
 			$sOutput = ob_get_clean();
-			
+
 //SkipDebug
 			if (0 < strlen($sOutput))
 			{
@@ -232,9 +248,8 @@ final class xajaxUserFunction
 			}
 //EndSkipDebug
 		}
-		
+
 		$mFunction = $this->uf;
 		$objResponseManager->append(call_user_func_array($mFunction, $aArgs));
 	}
 }
-?>

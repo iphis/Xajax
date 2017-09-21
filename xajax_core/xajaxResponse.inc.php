@@ -40,6 +40,7 @@
 
 class xajaxResponse
 {
+	private static $instance;
 	/*
 		Array: aCommands
 		
@@ -75,12 +76,16 @@ class xajaxResponse
 	private $objPluginManager;
 	// sorry but this config is static atm
 	private $sContentType = 'application/json'; //'text/xml';
-
 	/*
 		Constructor: xajaxResponse
 		
 		Create and initialize a xajaxResponse object.
 	*/
+	/**
+	 * xajaxResponse constructor.
+	 *
+	 * @deprecated use getInstance
+	 */
 	public function __construct()
 	{
 		//SkipDebug
@@ -106,9 +111,35 @@ class xajaxResponse
 	}
 
 	/**
+	 * Getting a FactoryPattern instance
+	 *
+	 * @since 7.0
+	 * @return \xajaxResponse
+	 */
+	public static function getInstance()
+	{
+		if (!self::$instance instanceof xajaxResponse)
+		{
+			self::setInstance(new xajaxResponse());
+		}
+
+		return self::$instance;
+	}
+
+	/**
+	 * @since 7.0
+	 *
+	 * @param \xajaxResponse $instance
+	 */
+	private static function setInstance(self $instance)
+	{
+		self::$instance = $instance;
+	}
+
+	/**
 	 * @return string;
 	 */
-	public function getResponseType()
+	public function getResponseType(): string
 	{
 		return $this->sResponseType;
 	}
@@ -118,11 +149,11 @@ class xajaxResponse
 	 *
 	 * @param string $sResponseType
 	 *
-	 * @return bool
+	 * @return bool has set or not
 	 */
-	public function setResponseType($sResponseType = ''): bool
+	public function setResponseType(string $sResponseType = ''): bool
 	{
-		$sResponseType = strtoupper((string) $sResponseType);
+		$sResponseType = strtoupper($sResponseType);
 
 		if ('XML' === $sResponseType)
 		{

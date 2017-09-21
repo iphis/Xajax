@@ -53,7 +53,7 @@ function helloWorld($isCaps)
 	    $text = 'Hello World!';
     }
 
-	$objResponse = new xajaxResponse();
+	$objResponse = xajaxResponse::getInstance();
 	$objResponse->assign('div1', 'innerHTML', $text);
 
 	return $objResponse;
@@ -66,7 +66,7 @@ function helloWorld($isCaps)
 */
 function setColor($sColor)
 {
-	$objResponse = new xajaxResponse();
+	$objResponse = xajaxResponse::getInstance();
 	$objResponse->assign('div1', 'style.color', $sColor);
 
 	return $objResponse;
@@ -78,14 +78,27 @@ function setColor($sColor)
 	- <helloWorld>
 	- <setColor>
 */
-$reqHelloWorldMixed = $xajax->register(XAJAX_FUNCTION, 'helloWorld');
+
+/** @var \xajaxFunctionPlugin $xajaxRequestPluginFunction */
+$xajaxRequestPluginFunction = $xajax->getPlugin('function');
+$reqHelloWorldMixed         = $xajaxRequestPluginFunction->registerRequest((array) 'helloWorld');
+
+//$reqHelloWorldMixed = $xajax->register(XAJAX_FUNCTION, 'helloWorld');
 $reqHelloWorldMixed->setParameter(0, XAJAX_JS_VALUE, 0);
 
+/** @var \xajaxRequest $reqHelloWorldAllCaps */
 $reqHelloWorldAllCaps = $xajax->register(XAJAX_FUNCTION, 'helloWorld');
-$reqHelloWorldAllCaps->setParameter(0, XAJAX_JS_VALUE, 1);
+if ($reqHelloWorldAllCaps)
+{
+	$reqHelloWorldAllCaps->setParameter(0, XAJAX_JS_VALUE, 1);
+}
 
+/** @var \xajaxRequest $reqSetColor */
 $reqSetColor = $xajax->register(XAJAX_FUNCTION, 'setColor');
-$reqSetColor->setParameter(0, XAJAX_INPUT_VALUE, 'colorselect');
+if ($reqSetColor)
+{
+	$reqSetColor->setParameter(0, XAJAX_INPUT_VALUE, 'colorselect');
+}
 
 /*
 	Section: processRequest
@@ -98,6 +111,7 @@ $reqSetColor->setParameter(0, XAJAX_INPUT_VALUE, 'colorselect');
 	is for the initial page load or a xajax request.  Everything after this statement
 	will be executed only when the page is first loaded.
 */
+
 $xajax->processRequest();
 
 echo '<?xml version="1.0" encoding="UTF-8"?>';
@@ -114,7 +128,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
 		/* <![CDATA[ */
 		window.onload = function(){
 			// call the helloWorld function to populate the div on load
-		<?php $reqHelloWorldMixed->printScript(); ?>;
+		<?php $reqHelloWorldAllCaps->printScript(); ?>;
 			// call the setColor function on load
 		<?php $reqSetColor->printScript(); ?>;
 		}
@@ -124,14 +138,20 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
 <body style="text-align:center;">
 <div id="div1">&#160;</div>
 <br />
-<button onclick='<?php $reqHelloWorldMixed->printScript(); ?>'>Click Me</button>
-<button onclick='<?php $reqHelloWorldAllCaps->printScript(); ?>'>CLICK ME</button>
-<select id="colorselect" name="colorselect"
-		onchange='<?php $reqSetColor->printScript(); ?>;'>
-	<option value="black" selected="selected">Black</option>
-	<option value="red">Red</option>
-	<option value="green">Green</option>
-	<option value="blue">Blue</option>
-</select>
+<form action="javascript:void(null)">
+	<fieldset>
+		<button onclick='<?php $reqHelloWorldMixed->printScript(); ?>'>Click Me</button>
+		<button onclick='<?php $reqHelloWorldAllCaps->printScript(); ?>'>CLICK ME</button>
+		<label>Change Color
+			<select id="colorselect" name="colorselect"
+					onchange='<?php $reqSetColor->printScript(); ?>;'>
+				<option value="black" selected="selected">Black</option>
+				<option value="red">Red</option>
+				<option value="green">Green</option>
+				<option value="blue">Blue</option>
+			</select>
+		</label>
+	</fieldset>
+</form>
 </body>
 </html>

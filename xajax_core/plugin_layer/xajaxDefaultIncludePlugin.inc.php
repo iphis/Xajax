@@ -26,10 +26,11 @@
 
 	This is called when the page is first loaded.
 */
-final class xajaxIncludeClientScriptPlugin extends xajaxRequestPlugin
+
+use Xajax\plugin_layer\RequestIface;
+
+final class xajaxIncludeClientScriptPlugin extends xajaxRequestPlugin implements RequestIface
 {
-
-
 	public function xajaxIncludeClientScriptPlugin()
 	{
 
@@ -79,9 +80,10 @@ final class xajaxIncludeClientScriptPlugin extends xajaxRequestPlugin
 	{
 		ob_start();
 		$this->printJavascriptConfig();
+
 		return ob_get_clean();
 	}
-	
+
 	/*
 		Function: printJavascriptConfig
 		
@@ -112,9 +114,10 @@ final class xajaxIncludeClientScriptPlugin extends xajaxRequestPlugin
 	{
 		ob_start();
 		$this->printJavascriptInclude();
+
 		return ob_get_clean();
 	}
-	
+
 	/*
 		Function: printJavascriptInclude
 		
@@ -123,11 +126,30 @@ final class xajaxIncludeClientScriptPlugin extends xajaxRequestPlugin
 	public function printJavascriptInclude()
 	{
 
-			
 
 	}
-	
 
+	/**
+	 * @return string
+	 */
+	public function getName(): string
+	{
+		return 'defaultInclude';
+	}
+
+	/**
+	 * Registers an Single Request
+	 *
+	 * @since 7.0
+	 *
+	 * @param array $aArgs
+	 *
+	 * @return bool
+	 */
+	public function registerRequest(array $aArgs = [])
+	{
+		throw new BadFunctionCallException('xajaxIncludeClientScriptPlugin::registerRequest is not need to be called');
+	}
 }
 
 /*

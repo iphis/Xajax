@@ -23,7 +23,13 @@
 		Specifies that the item being registered via the <xajax->register> function is a
 		object who's methods will be callable from the browser.
 */
-if (!defined ('XAJAX_CALLABLE_OBJECT')) define ('XAJAX_CALLABLE_OBJECT', 'callable object');
+
+use Xajax\plugin_layer\RequestIface;
+
+if (!defined('XAJAX_CALLABLE_OBJECT'))
+{
+	define('XAJAX_CALLABLE_OBJECT', 'callable object');
+}
 
 //SkipAIO
 require dirname(__FILE__) . '/support/xajaxCallableObject.inc.php';
@@ -32,30 +38,26 @@ require dirname(__FILE__) . '/support/xajaxCallableObject.inc.php';
 /*
 	Class: xajaxCallableObjectPlugin
 */
-final class xajaxCallableObjectPlugin extends xajaxRequestPlugin
+
+final class xajaxCallableObjectPlugin extends xajaxRequestPlugin implements RequestIface
 {
 	/*
 		Array: aCallableObjects
 	*/
 	private $aCallableObjects;
-
 	/*
 		String: sXajaxPrefix
 	*/
 	private $sXajaxPrefix;
-	
 	/*
 		String: sDefer
 	*/
 	private $sDefer;
-	
 	private $bDeferScriptGeneration;
-
 	/*
 		String: sRequestedClass
 	*/
 	private $sRequestedClass;
-	
 	/*
 		String: sRequestedMethod
 	*/
@@ -66,19 +68,31 @@ final class xajaxCallableObjectPlugin extends xajaxRequestPlugin
 	*/
 	public function __construct()
 	{
-		$this->aCallableObjects = array();
+		$this->aCallableObjects = [];
 
-		$this->sXajaxPrefix = 'xajax_';
-		$this->sDefer = '';
+		$this->sXajaxPrefix           = 'xajax_';
+		$this->sDefer                 = '';
 		$this->bDeferScriptGeneration = false;
 
-		$this->sRequestedClass = NULL;
-		$this->sRequestedMethod = NULL;
+		$this->sRequestedClass  = null;
+		$this->sRequestedMethod = null;
 
-		if (!empty($_GET['xjxcls'])) $this->sRequestedClass = $_GET['xjxcls'];
-		if (!empty($_GET['xjxmthd'])) $this->sRequestedMethod = $_GET['xjxmthd'];
-		if (!empty($_POST['xjxcls'])) $this->sRequestedClass = $_POST['xjxcls'];
-		if (!empty($_POST['xjxmthd'])) $this->sRequestedMethod = $_POST['xjxmthd'];
+		if (!empty($_GET['xjxcls']))
+		{
+			$this->sRequestedClass = $_GET['xjxcls'];
+		}
+		if (!empty($_GET['xjxmthd']))
+		{
+			$this->sRequestedMethod = $_GET['xjxmthd'];
+		}
+		if (!empty($_POST['xjxcls']))
+		{
+			$this->sRequestedClass = $_POST['xjxcls'];
+		}
+		if (!empty($_POST['xjxmthd']))
+		{
+			$this->sRequestedMethod = $_POST['xjxmthd'];
+		}
 	}
 
 	/*
@@ -86,22 +100,43 @@ final class xajaxCallableObjectPlugin extends xajaxRequestPlugin
 	*/
 	public function configure($sName, $mValue)
 	{
-		if ('wrapperPrefix' == $sName) {
+		if ('wrapperPrefix' == $sName)
+		{
 			$this->sXajaxPrefix = $mValue;
-		} else if ('scriptDefferal' == $sName) {
-			if (true === $mValue) $this->sDefer = 'defer ';
-			else $this->sDefer = '';
-		} else if ('deferScriptGeneration' == $sName) {
+		}
+		else if ('scriptDefferal' == $sName)
+		{
+			if (true === $mValue)
+			{
+				$this->sDefer = 'defer ';
+			}
+			else
+			{
+				$this->sDefer = '';
+			}
+		}
+		else if ('deferScriptGeneration' == $sName)
+		{
 			if (true === $mValue || false === $mValue)
+			{
 				$this->bDeferScriptGeneration = $mValue;
+			}
 			else if ('deferred' === $mValue)
+			{
 				$this->bDeferScriptGeneration = $mValue;
+			}
 		}
 	}
 
 	/*
 		Function: register
 	*/
+	/**
+	 * @param $aArgs
+	 *
+	 * @return array|bool
+	 * @deprecated use registerRequest
+	 */
 	public function register($aArgs)
 	{
 		if (1 < count($aArgs))
@@ -116,18 +151,29 @@ final class xajaxCallableObjectPlugin extends xajaxRequestPlugin
 				if (false === is_object($xco))
 				{
 					trigger_error("To register a callable object, please provide an instance of the desired class.", E_USER_WARNING);
+
 					return false;
 				}
 //EndSkipDebug
 
 				if (false === ($xco instanceof xajaxCallableObject))
+				{
 					$xco = new xajaxCallableObject($xco);
+				}
 
 				if (2 < count($aArgs))
+				{
 					if (is_array($aArgs[2]))
+					{
 						foreach ($aArgs[2] as $sKey => $aValue)
+						{
 							foreach ($aValue as $sName => $sValue)
+							{
 								$xco->configure($sKey, $sName, $sValue);
+							}
+						}
+					}
+				}
 
 				$this->aCallableObjects[] = $xco;
 
@@ -138,15 +184,18 @@ final class xajaxCallableObjectPlugin extends xajaxRequestPlugin
 		return false;
 	}
 
-
 	function generateHash()
 	{
 		$sHash = '';
-		foreach(array_keys($this->aCallableObjects) as $sKey)
+		foreach (array_keys($this->aCallableObjects) as $sKey)
+		{
 			$sHash .= $this->aCallableObjects[$sKey]->getName();
+		}
 
-		foreach(array_keys($this->aCallableObjects) as $sKey)
-			$sHash .= implode('|',$this->aCallableObjects[$sKey]->getMethods());
+		foreach (array_keys($this->aCallableObjects) as $sKey)
+		{
+			$sHash .= implode('|', $this->aCallableObjects[$sKey]->getMethods());
+		}
 
 		return md5($sHash);
 	}
@@ -159,8 +208,10 @@ final class xajaxCallableObjectPlugin extends xajaxRequestPlugin
 
 		if (0 < count($this->aCallableObjects))
 		{
-			foreach(array_keys($this->aCallableObjects) as $sKey)
+			foreach (array_keys($this->aCallableObjects) as $sKey)
+			{
 				$this->aCallableObjects[$sKey]->generateClientScript($this->sXajaxPrefix);
+			}
 		}
 	}
 
@@ -169,10 +220,14 @@ final class xajaxCallableObjectPlugin extends xajaxRequestPlugin
 	*/
 	public function canProcessRequest()
 	{
-		if (NULL == $this->sRequestedClass)
+		if (null == $this->sRequestedClass)
+		{
 			return false;
-		if (NULL == $this->sRequestedMethod)
+		}
+		if (null == $this->sRequestedMethod)
+		{
 			return false;
+		}
 
 		return true;
 	}
@@ -182,13 +237,17 @@ final class xajaxCallableObjectPlugin extends xajaxRequestPlugin
 	*/
 	public function processRequest()
 	{
-		if (NULL == $this->sRequestedClass)
+		if (null == $this->sRequestedClass)
+		{
 			return false;
-		if (NULL == $this->sRequestedMethod)
+		}
+		if (null == $this->sRequestedMethod)
+		{
 			return false;
+		}
 
 		$objArgumentManager = xajaxArgumentManager::getInstance();
-		$aArgs = $objArgumentManager->process();
+		$aArgs              = $objArgumentManager->process();
 
 		foreach (array_keys($this->aCallableObjects) as $sKey)
 		{
@@ -199,12 +258,73 @@ final class xajaxCallableObjectPlugin extends xajaxRequestPlugin
 				if ($xco->hasMethod($this->sRequestedMethod))
 				{
 					$xco->call($this->sRequestedMethod, $aArgs);
+
 					return true;
 				}
 			}
 		}
 
 		return 'Invalid request for a callable object.';
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getName(): string
+	{
+		return 'callableObject';
+	}
+
+	/**
+	 * Registers an Single Request
+	 *
+	 * @since 7.0
+	 *
+	 * @param array $aArgs
+	 *
+	 * @return bool
+	 */
+	public function registerRequest(array $aArgs = [])
+	{
+		if (0 < count($aArgs))
+		{
+
+			$xco = $aArgs[0];
+
+//SkipDebug
+			if (false === is_object($xco))
+			{
+				trigger_error("To register a callable object, please provide an instance of the desired class.", E_USER_WARNING);
+
+				return false;
+			}
+//EndSkipDebug
+
+			if (false === ($xco instanceof xajaxCallableObject))
+			{
+				$xco = new xajaxCallableObject($xco);
+			}
+
+			if (2 < count($aArgs))
+			{
+				if (is_array($aArgs[1]))
+				{
+					foreach ($aArgs[1] as $sKey => $aValue)
+					{
+						foreach ($aValue as $sName => $sValue)
+						{
+							$xco->configure($sKey, $sName, $sValue);
+						}
+					}
+				}
+			}
+
+			$this->aCallableObjects[] = $xco;
+
+			return $xco->generateRequests($this->sXajaxPrefix);
+		}
+
+		return false;
 	}
 }
 
