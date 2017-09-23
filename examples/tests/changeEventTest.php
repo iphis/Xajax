@@ -1,16 +1,17 @@
 <?php
-require_once("../xajax_core/xajax.inc.php");
+require_once __DIR__ . '/bootstrap.php';
+
 
 function addEvent($sId, $sCode)
 {
-	$objResponse = new xajaxResponse();
-	$objResponse->addEvent($sId, "onclick", $sCode);
+	$objResponse = xajaxResponse::getInstance();
+	$objResponse->addEvent($sId, 'onclick', $sCode);
 	return $objResponse;
 }
 
 $xajax = new xajax();
 //$xajax->configure("debug", true);
-$xajax->register(XAJAX_FUNCTION, "addEvent");
+$xajax->register(XAJAX_FUNCTION, 'addEvent');
 $xajax->processRequest();
 $xajax->configure('javascript URI', '../');
 
