@@ -82,7 +82,6 @@ function setColor($sColor)
 /** @var \Xajax\plugin_layer\RequestIface $xajaxRequestPluginFunction */
 $xajaxRequestPluginFunction = $xajax->getPlugin('function');
 $reqHelloWorldMixed         = $xajaxRequestPluginFunction->registerRequest((array) 'helloWorld');
-
 // or direct
 //$reqHelloWorldMixed= $xajax->getPlugin('function')->registerRequest((array) 'helloWorld');
 

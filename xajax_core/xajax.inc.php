@@ -80,6 +80,7 @@ final class xajax
 {
 	// temporarily Helper Method
 	use Configuration\TRConfigure;
+
 	/*
 		Array: aSettings
 		
@@ -90,7 +91,12 @@ final class xajax
 		It is advised that individual plugins store a local copy of the settings they
 		wish to track, however, settings are available via a reference to the <xajax> 
 		object using <xajax->getConfiguration>.
+
 	*/
+	/**
+	 * @deprecated jproof/xajax 0.7.2 use the Configuration Class
+	 * @see        Configuration
+	 **/
 	private $aSettings = [];
 	/*
 		Boolean: bErrorHandler
@@ -100,6 +106,10 @@ final class xajax
 		to the client as part of the response.  The client can then display the errors
 		to the user if so desired.
 	*/
+	/**
+	 * @var bool
+	 * @deprecated jproof/xajax 0.7.2 use the Configuration Class
+	 */
 	private $bErrorHandler;
 	/*
 		Array: aProcessingEvents
@@ -117,6 +127,10 @@ final class xajax
 		as part of the response.  Typically this would result in an error, however, 
 		a response processor on the client side could be designed to handle this condition.
 	*/
+	/**
+	 * @var bool
+	 * @deprecated jproof/xajax 0.7.2 use the Configuration Class
+	 */
 	private $bExitAllowed;
 	/*
 		Boolean: bCleanBuffer
@@ -125,6 +139,10 @@ final class xajax
 		to true allows <xajax> to clear out any pending output buffers so that the 
 		<xajaxResponse> is (virtually) the only output when handling a request.
 	*/
+	/**
+	 * @var bool
+	 * @deprecated jproof/xajax 0.7.2 use the Configuration Class
+	 */
 	private $bCleanBuffer;
 	/*
 		String: sLogFile
@@ -133,6 +151,10 @@ final class xajax
 		file on the server that you wish to have php error messages written to during
 		the processing of <xajax> requests.	
 	*/
+	/**
+	 * @var string
+	 * @deprecated jproof/xajax 0.7.2 use the Configuration Class
+	 */
 	private $sLogFile;
 	/*
 		String: sCoreIncludeOutput
@@ -563,7 +585,7 @@ final class xajax
 	 * @return \xajaxPluginManager
 	 * @since 7.0
 	 */
-	public function getObjPluginManager(): \xajaxPluginManager
+	public function getObjPluginManager(): xajaxPluginManager
 	{
 		return $this->objPluginManager instanceof xajaxPluginManager ? $this->objPluginManager : $this->setObjPluginManager(xajaxPluginManager::getInstance());
 	}
@@ -577,7 +599,7 @@ final class xajax
 	 *
 	 * @return \xajaxPluginManager
 	 */
-	private function setObjPluginManager(\xajaxPluginManager $objPluginManager): \xajaxPluginManager
+	private function setObjPluginManager(xajaxPluginManager $objPluginManager): xajaxPluginManager
 	{
 		return $this->objPluginManager = $objPluginManager;
 	}
