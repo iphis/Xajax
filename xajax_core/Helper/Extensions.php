@@ -28,17 +28,19 @@ class Extensions
 	 */
 	public static function getExtensions(): array
 	{
-		return get_loaded_extensions(false);
+		return get_loaded_extensions();
 	}
 
 	/**
+	 * Checks, PhpExtension is installed
+	 *
 	 * @param string $extension
 	 *
 	 * @return bool
 	 */
-	public static function isExtension($extension = ''): bool
+	public static function isExtension(string $extension = ''): bool
 	{
-		return array_key_exists($extension, self::getExtensions());
+		return in_array($extension, self::getExtensions(), true);
 	}
 
 	/**

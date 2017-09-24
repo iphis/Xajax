@@ -16,6 +16,8 @@ declare(strict_types=1);
 
 namespace Xajax\Helper;
 
+use RuntimeException;
+
 /**
  * Class Encoding
  * Helper to detect and get valid Encoding Names
@@ -63,6 +65,7 @@ class Encoding
 
 	/**
 	 * @return array
+	 * @throws \RuntimeException
 	 */
 	public static function getPhpEncodings(): array
 	{
@@ -75,7 +78,7 @@ class Encoding
 			if (0 === count($encodings))
 			{
 				//todo can be removed or set as notice
-				throw new \RuntimeException('missing MB extension');
+				throw new RuntimeException('Missing PHP MBString extension');
 			}
 		}
 
