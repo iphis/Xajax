@@ -29,8 +29,12 @@
 	Default character encoding used by both the <xajax> and
 	<xajaxResponse> classes.
 */
+
+use Xajax\Configuration;
+
 if (!defined('XAJAX_DEFAULT_CHAR_ENCODING'))
 {
+	/**@deprecated use the Xajax\Configuration::getDefaultCharacterEncoding* */
 	define('XAJAX_DEFAULT_CHAR_ENCODING', 'utf-8');
 }
 
@@ -41,7 +45,7 @@ if (!defined('XAJAX_DEFAULT_CHAR_ENCODING'))
 	String: XAJAX_PROCESSING_EVENT_INVALID
 
 	Identifiers used to register processing events.  Processing events are essentially
-	hooks into the xajax core that can be used to add functionality into the request
+	hooks into the xajax Core that can be used to add functionality into the request
 	processing sequence.
 */
 if (!defined('XAJAX_PROCESSING_EVENT'))
@@ -74,6 +78,8 @@ if (!defined('XAJAX_PROCESSING_EVENT_INVALID'))
 
 final class xajax
 {
+	// temporarily Helper Method
+	use Configuration\TRConfigure;
 	/*
 		Array: aSettings
 		
@@ -132,8 +138,11 @@ final class xajax
 		String: sCoreIncludeOutput
 		
 		This is populated with any errors or warnings produced while including the xajax
-		core components.  This is useful for debugging core updates.
+		Core components.  This is useful for debugging Core updates.
 	*/
+	/**
+	 * @deprecated never used
+	 **/
 	private $sCoreIncludeOutput;
 	/*
 		Object: objPluginManager
@@ -172,7 +181,13 @@ final class xajax
 	 **/
 	private $objLanguageManager;
 	private $challengeResponse;
-
+	/**
+	 * Global Configuration Object
+	 *
+	 * @since xajax 7.0.1
+	 * @var \Xajax\Configuration
+	 */
+	private $configuration;
 	/*
 		Constructor: xajax
 
@@ -184,6 +199,11 @@ final class xajax
 			for calls back to the server.  If empty, xajax fills in the current
 			URI that initiated this request.
 	*/
+	/**
+	 * xajax constructor.
+	 *
+	 * @param array $configuration
+	 */
 	public function __construct(array $configuration = [])
 	{
 		$this->bErrorHandler     = false;
@@ -218,7 +238,7 @@ final class xajax
 			'generateStubs'          => true,
 			'logFile'                => '',
 			'timeout'                => 6000,
-			'version'                => $this->getVersion(),
+
 		    ]
 		);
 
@@ -282,6 +302,7 @@ final class xajax
 	public function __wakeup()
 	{
 
+
 		$sLocalFolder = __DIR__;
 
 //SkipAIO
@@ -339,7 +360,7 @@ final class xajax
 	*/
 	public static function getVersion(): string
 	{
-		return 'xajax 0.6 beta 1';
+		return 'xajax 0.7.1';
 	}
 
 	/**
@@ -444,7 +465,7 @@ final class xajax
 		
 		Call this function to set options that will effect the processing of 
 		xajax requests.  Configuration settings can be specific to the xajax
-		core, request processor plugins and response plugins.
+		Core, request processor plugins and response plugins.
 
 
 		Parameters:
@@ -461,33 +482,26 @@ final class xajax
 	 * @param $sName
 	 * @param $mValue
 	 *
-	 * @deprecated evil configuration type
+	 * @deprecated old Configuration use @see
 	 */
 	public function configure($sName, $mValue)
 	{
 
-		if ('errorHandler' == $sName)
+		$isBoolValue = is_bool($mValue);
+		if ('errorHandler' === $sName && $isBoolValue)
 		{
-			if (true === $mValue || false === $mValue)
-			{
-				$this->bErrorHandler = $mValue;
-			}
+			$this->bErrorHandler = $mValue;
 		}
-		else if ('exitAllowed' == $sName)
+		else if ('exitAllowed' === $sName && $isBoolValue)
 		{
-			if (true === $mValue || false === $mValue)
-			{
-				$this->bExitAllowed = $mValue;
-			}
+
+			$this->bExitAllowed = $mValue;
 		}
-		else if ('cleanBuffer' == $sName)
+		else if ('cleanBuffer' === $sName && $isBoolValue)
 		{
-			if (true === $mValue || false === $mValue)
-			{
-				$this->bCleanBuffer = $mValue;
-			}
+			$this->bCleanBuffer = $mValue;
 		}
-		else if ('logFile' == $sName)
+		else if ('logFile' === $sName)
 		{
 			$this->sLogFile = $mValue;
 		}
@@ -496,6 +510,8 @@ final class xajax
 		$this->objArgumentManager->configure($sName, $mValue);
 		$this->getObjPluginManager()->configure($sName, $mValue);
 		$this->objResponseManager->configure($sName, $mValue);
+
+		Configuration::getInstance()->{$sName} = $mValue;
 
 		$this->aSettings[$sName] = $mValue;
 	}
@@ -646,7 +662,7 @@ final class xajax
 		// TODO: Move to configuration option
 		if (null === $value)
 		{
-			$value = rand(100000, 999999);
+			$value = random_int(100000, 999999);
 		}
 
 		return hash($algo, $value);
@@ -661,7 +677,7 @@ final class xajax
 
 		NOTE:  Sessions must be enabled to use this feature.
 	*/
-	public function challenge($algo = null, $value = null)
+	public function challenge($algo = null, $value = null): bool
 	{
 		if (false === $this->verifySession())
 		{
@@ -720,9 +736,11 @@ final class xajax
 		}
 
 //SkipDebug
+		// @todo check the error Response
 		// Check to see if headers have already been sent out, in which case we can't do our job
 		if (headers_sent($filename, $linenumber))
 		{
+
 			echo "Output has already been sent to the browser at {$filename}:{$linenumber}.\n";
 			echo 'Please make sure the command $xajax->processRequest() is placed before this.';
 			exit();
@@ -731,6 +749,7 @@ final class xajax
 
 		if ($this->canProcessRequest())
 		{
+			// @todo check error handler
 			// Use xajax error handler if necessary
 			if ($this->bErrorHandler)
 			{
@@ -818,8 +837,8 @@ final class xajax
 				{
 					if (0 < strlen($this->sLogFile))
 					{
-						$fH = @fopen($this->sLogFile, "a");
-						if (null != $fH)
+						$fH = @fopen($this->sLogFile, 'ab');
+						if (null !== $fH)
 						{
 							fwrite(
 							    $fH,
@@ -871,9 +890,12 @@ final class xajax
 		that are included and the functions that are registered.
 
 	*/
-	public function printJavascript()
+	/**
+	 * @param bool $bDeferScriptGenerationForce forcing re-cache file
+	 */
+	public function printJavascript($bDeferScriptGenerationForce = false)
 	{
-		$this->getObjPluginManager()->generateClientScript();
+		$this->getObjPluginManager()->generateClientScript($bDeferScriptGenerationForce);
 	}
 
 	/*

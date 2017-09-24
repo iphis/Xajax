@@ -75,16 +75,16 @@ $xajax->configure('javascript URI', '../');
 	<script type="text/javascript">
 		function getTestArray() {
 			var text = xajax.$('textField1').value;
-			var testArray = new Array();
+			var testArray = [];
 			testArray[0] = text;
 			testArray[1] = text;
-			testArray[text] = new Array();
+			testArray[text] = [];
 			testArray[text][0] = text;
 			testArray[text][1] = text;
-			testArray[3] = new Array();
+			testArray[3] = [];
 			testArray[3][0] = text;
 			testArray[3][1] = text;
-			testArray[3][2] = new Array();
+			testArray[3][2] = [];
 			testArray[3][2][0] = text;
 			testArray[3][2][1] = text;
 

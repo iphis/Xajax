@@ -83,7 +83,7 @@ $xajax->configure('javascript URI', '../');
 <form id="testForm1" onsubmit="return false;">
 	<p>
 		<input type="button"
-			   value="xajax" onclick="<?php $callXajaxResponse->printScript(); ?>; return false;" />
+			   value="xajax" onclick="<?php $callXajaxResponse->printScript(); ?> return false;" />
 		<!-- use xajax.call to call the functions that return data directly and
 indicate the javascript function that will handle the response -->
 		<input type='button' value='xml' onclick='<?php $callXmlResponse->printScript(); ?>' />

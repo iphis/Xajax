@@ -129,22 +129,19 @@ $xajax->configure('javascript URI', '../');
 <h1>Register Object Test</h1>
 
 <p>
-	<a href='#' onclick='<?php $aMethodsTest['firstmethod']->printScript(); ?>; return false;'>Test
+	<a href='#' onclick='<?php $aMethodsTest['firstmethod']->printScript(); ?> return false;'>Test
 		Callable Object:2</a>
 
 	<br />
-
-	<a href='#' onclick='<?php $aMethodsTest['second_method']->printScript(); ?>; return false;'>Test
+	<a href='#' onclick='<?php $aMethodsTest['second_method']->printScript(); ?> return false;'>Test
 		Callable Object:2</a>
 
 	<br />
-
-	<a href='#' onclick='<?php $aMethodsTest2['thirdmethod']->printScript(); ?>; return false;'>Test
+	<a href='#' onclick='<?php $aMethodsTest2['thirdmethod']->printScript(); ?> return false;'>Test
 		Callable Object:3</a>
 
 	<br />
-
-	<a href='#' onclick='<?php $aMethodsTest2['firstmethod']->printScript(); ?>; return false;'>Test
+	<a href='#' onclick='<?php $aMethodsTest2['firstmethod']->printScript(); ?> return false;'>Test
 		Callable Object:3</a>
 </p>
 
@@ -155,12 +152,12 @@ $xajax->configure('javascript URI', '../');
 
 	<p>
 		<input type='submit' value='Submit to Instance Method'
-			   onclick='<?php $requestInstanceMethod->printScript(); ?>; return false;' />
+			   onclick='<?php $requestInstanceMethod->printScript(); ?> return false;' />
 	</p>
 
 	<p>
 		<input type='submit' value='Submit to Class Method'
-			   onclick='<?php $requestClassMethod->printScript(); ?>; return false;' />
+			   onclick='<?php $requestClassMethod->printScript(); ?> return false;' />
 	</p>
 </form>
 
