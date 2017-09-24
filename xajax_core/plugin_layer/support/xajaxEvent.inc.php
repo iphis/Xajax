@@ -41,7 +41,7 @@ final class xajaxEvent
 	/*
 		Array: aConfiguration
 		
-		Configuration / call options to be used when initiating a xajax request
+		Config / call options to be used when initiating a xajax request
 		to trigger this event.
 	*/
 	private $aConfiguration;

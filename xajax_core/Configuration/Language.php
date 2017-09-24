@@ -19,7 +19,7 @@ namespace Xajax\Configuration;
 /**
  * Trait Language
  *
- * @package Xajax\Configuration
+ * @package Xajax\Config
  * @todo    check language folder
  * @todo    refacture languageManager or make an Vote
  */

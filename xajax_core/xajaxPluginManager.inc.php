@@ -19,6 +19,7 @@
 */
 
 //SkipAIO
+use Xajax\Configuration;
 use Xajax\plugin_layer\RequestIface;
 
 require __DIR__ . '/xajaxPlugin.inc.php';
@@ -30,17 +31,31 @@ require __DIR__ . '/xajaxPlugin.inc.php';
 
 final class xajaxPluginManager
 {
+	use Configuration\Config;
+
 	/*
 		Array: aRequestPlugins
 	*/
+	/**
+	 * @deprecated
+	 * @var array
+	 */
 	private $aRequestPlugins;
 	/*
 		Array: aResponsePlugins
 	*/
+	/**
+	 * @deprecated
+	 * @var array
+	 */
 	private $aResponsePlugins;
 	/*
 		Array: aConfigurable
 	*/
+	/**
+	 * @deprecated
+	 * @var array
+	 */
 	private $aConfigurable;
 	/*
 		Array: aRegistrars
@@ -52,6 +67,10 @@ final class xajaxPluginManager
 	/*
 		Array: aProcessors
 	*/
+	/**
+	 * @deprecated
+	 * @var array
+	 */
 	private $aProcessors;
 	/*
 		Array: aClientScriptGenerators
@@ -64,6 +83,9 @@ final class xajaxPluginManager
 	*/
 
 	private $sJsURI;
+	/**
+	 * @var array
+	 */
 	public  $aJsFiles = [];
 	private $sDefer;
 	/**
@@ -78,6 +100,7 @@ final class xajaxPluginManager
 	private $bDebug;
 	private $bVerboseDebug;
 	private $nScriptLoadTimeout;
+	/**@deprecated * */
 	private $bUseUncompressedScripts;
 	private $bDeferScriptGeneration;
 	private $sLanguage;
@@ -92,6 +115,8 @@ final class xajaxPluginManager
 
 	private function __construct()
 	{
+
+
 		$this->aRequestPlugins  = [];
 		$this->aResponsePlugins = [];
 
@@ -130,12 +155,12 @@ final class xajaxPluginManager
 		object : a reference to the one and only instance of the
 			plugin manager.
 	*/
-	public static function &getInstance()
+	public static function &getInstance(): \xajaxPluginManager
 	{
 		static $obj;
 		if (!$obj)
 		{
-			$obj = new xajaxPluginManager();
+			$obj = new self;
 		}
 
 		return $obj;

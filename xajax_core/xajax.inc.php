@@ -30,11 +30,11 @@
 	<xajaxResponse> classes.
 */
 
-use Xajax\Configuration;
+use Xajax\Configuration\Config;
 
 if (!defined('XAJAX_DEFAULT_CHAR_ENCODING'))
 {
-	/**@deprecated use the Xajax\Configuration::getDefaultCharacterEncoding* */
+	/**@deprecated use the Xajax\Config::getDefaultCharacterEncoding* */
 	define('XAJAX_DEFAULT_CHAR_ENCODING', 'utf-8');
 }
 
@@ -79,7 +79,7 @@ if (!defined('XAJAX_PROCESSING_EVENT_INVALID'))
 final class xajax
 {
 	// temporarily Helper Method
-	use Configuration\TRConfigure;
+	use Config;
 
 	/*
 		Array: aSettings
@@ -94,8 +94,8 @@ final class xajax
 
 	*/
 	/**
-	 * @deprecated jproof/xajax 0.7.2 use the Configuration Class
-	 * @see        Configuration
+	 * @deprecated jproof/xajax 0.7.2 use the Config Class
+	 * @see        Config
 	 **/
 	private $aSettings = [];
 	/*
@@ -108,7 +108,7 @@ final class xajax
 	*/
 	/**
 	 * @var bool
-	 * @deprecated jproof/xajax 0.7.2 use the Configuration Class
+	 * @deprecated jproof/xajax 0.7.2 use the Config Class
 	 */
 	private $bErrorHandler;
 	/*
@@ -129,7 +129,7 @@ final class xajax
 	*/
 	/**
 	 * @var bool
-	 * @deprecated jproof/xajax 0.7.2 use the Configuration Class
+	 * @deprecated jproof/xajax 0.7.2 use the Config Class
 	 */
 	private $bExitAllowed;
 	/*
@@ -141,7 +141,7 @@ final class xajax
 	*/
 	/**
 	 * @var bool
-	 * @deprecated jproof/xajax 0.7.2 use the Configuration Class
+	 * @deprecated jproof/xajax 0.7.2 use the Config Class
 	 */
 	private $bCleanBuffer;
 	/*
@@ -153,7 +153,7 @@ final class xajax
 	*/
 	/**
 	 * @var string
-	 * @deprecated jproof/xajax 0.7.2 use the Configuration Class
+	 * @deprecated jproof/xajax 0.7.2 use the Config Class
 	 */
 	private $sLogFile;
 	/*
@@ -204,7 +204,7 @@ final class xajax
 	private $objLanguageManager;
 	private $challengeResponse;
 	/**
-	 * Global Configuration Object
+	 * Global Config Object
 	 *
 	 * @since xajax 7.0.1
 	 * @var \Xajax\Configuration
@@ -486,7 +486,7 @@ final class xajax
 		Function: configure
 		
 		Call this function to set options that will effect the processing of 
-		xajax requests.  Configuration settings can be specific to the xajax
+		xajax requests.  Config settings can be specific to the xajax
 		Core, request processor plugins and response plugins.
 
 
@@ -504,7 +504,7 @@ final class xajax
 	 * @param $sName
 	 * @param $mValue
 	 *
-	 * @deprecated old Configuration use @see
+	 * @deprecated old Config use @see
 	 */
 	public function configure($sName, $mValue)
 	{
@@ -533,7 +533,7 @@ final class xajax
 		$this->getObjPluginManager()->configure($sName, $mValue);
 		$this->objResponseManager->configure($sName, $mValue);
 
-		Configuration::getInstance()->{$sName} = $mValue;
+		$this->getConfig()->{$sName} = $mValue;
 
 		$this->aSettings[$sName] = $mValue;
 	}

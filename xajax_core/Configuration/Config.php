@@ -16,23 +16,21 @@ declare(strict_types=1);
 
 namespace Xajax\Configuration;
 
-use Xajax\Configuration;
-
 /**
- * Trait TRConfigure
+ * Trait Config
  *
- * @package Xajax\Configuration
+ * @package Xajax\Config
  */
-trait TRConfigure
+trait Config
 {
 	/**
-	 * Simple Helper to get the Xajax Configuration with the old way in xajax Core  and plugins
+	 * Simple Helper to get the Xajax Config with the old way in xajax Core  and plugins
 	 *
 	 * @notice this is an tmp helper method
 	 * @return \Xajax\Configuration
 	 */
-	public function getConfigurationInstance(): Configuration
+	public function getConfig(): \Xajax\Configuration
 	{
-		return Configuration::getInstance();
+		return \Xajax\Configuration::getInstance();
 	}
 }
