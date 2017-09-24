@@ -18,6 +18,7 @@ namespace Xajax;
 
 use BadMethodCallException;
 use Xajax\Configuration\Deprecated;
+use Xajax\Configuration\Language;
 use Xajax\Configuration\Scripts;
 use Xajax\Configuration\Uri;
 use Xajax\Helper\Encoding;
@@ -35,6 +36,9 @@ class Configuration
 	use Scripts;
 	/** Handling the Uri's**/
 	use Uri;
+
+	/** Language for errors an explanations **/
+	use Language;
 	/**
 	 * @var self
 	 */
