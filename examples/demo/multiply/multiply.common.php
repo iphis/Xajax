@@ -1,10 +1,10 @@
 <?php
 /*
-	File: signup.common.php
+	File: multiply.common.php
 
-	Example which demonstrates a xajax implementation of a sign-up page.
+	Example which demonstrates a multiplication using xajax.
 	
-	Title: Sign-up Example
+	Title: Multiplication Example
 	
 	Please see <copyright.inc.php> for a detailed description, copyright
 	and license information.
@@ -13,9 +13,9 @@
 /*
 	Section: Files
 	
-	- <signup.php>
-	- <signup.common.php>
-	- <signup.server.php>
+	- <multiply.php>
+	- <multiply.common.php>
+	- <multiply.server.php>
 */
 
 /*
@@ -25,11 +25,11 @@
 	@copyright Copyright (c) 2008-2009 by Joseph Woolley, Steffen Konerow, Jared White  & J. Max Wilson
 	@license http://www.xajaxproject.org/bsd_license.txt BSD License
 */
-require_once ("../../xajax_core/xajax.inc.php");
 
-session_start();
+require_once("../../xajax_core/xajax.inc.php");
 
-$xajax = new xajax("signup.server.php");
+$xajax = new xajax("multiply.server.php");
 $xajax->configure('javascript URI','../../');
-$xajax->register(XAJAX_FUNCTION,"processForm");
+$xajax->configure('debug', true);
+$xajax->register(XAJAX_FUNCTION,"multiply");
 ?>

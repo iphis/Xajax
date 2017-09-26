@@ -26,7 +26,7 @@
 	@license http://www.xajaxproject.org/bsd_license.txt BSD License
 */
 
-require_once ("signup.common.php");
+require_once("signup.common.php");
 
 function processForm($aFormValues)
 {

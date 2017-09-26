@@ -67,15 +67,13 @@ $xajax->configure('javascript URI', '../');
 <?php
 if (isset($_GET['registerFunction']) && 1 == $_GET['registerFunction']) {
 	?>
-
-<a href='./catchAllFunctionTest.php'>Disable Normal Handler</a>
+	<a href='catchAllFunctionTest.php'>Disable Normal Handler</a>
 
 	<?php
 }
 else {
 	?>
-
-<a href='./catchAllFunctionTest.php?registerFunction=1'>Enable Normal Handler</a>
+	<a href='catchAllFunctionTest.php?registerFunction=1'>Enable Normal Handler</a>
 
 	<?php
 }
