@@ -417,17 +417,7 @@ final class xajaxPluginManager
 				$this->sStatusMessages = 'false';
 			}
 		}
-		else if ('waitCursor' === $sName)
-		{
-			if (true === $mValue)
-			{
-				$this->sWaitCursor = 'true';
-			}
-			else
-			{
-				$this->sWaitCursor = 'false';
-			}
-		}
+
 		else if ('version' === $sName)
 		{
 			$this->sVersion = $mValue;
@@ -482,10 +472,7 @@ final class xajaxPluginManager
 				$this->bDeferScriptGeneration = $mValue;
 			}
 		}
-		else if ('language' === $sName)
-		{
-			$this->sLanguage = $mValue;
-		}
+
 		else if ('responseQueueSize' === $sName)
 		{
 			$this->nResponseQueueSize = $mValue;
@@ -528,6 +515,12 @@ final class xajaxPluginManager
 			{
 				return $mResult;
 			}
+
+			else
+			{
+				throw new RuntimeException(__FILE__ . ' ' . __LINE__ . 'Result is not an Xajax Request instance');
+			}
+
 			if (is_array($mResult))
 			{
 				return $mResult;
@@ -627,7 +620,7 @@ final class xajaxPluginManager
 	*/
 	private function _getScriptFilename($sFilename)
 	{
-		if ($this->bUseUncompressedScripts)
+		if ($this->getConfig()->isUseUncompressedScripts())
 		{
 			return str_replace('.js', '_uncompressed.js', $sFilename);
 		}
@@ -646,42 +639,41 @@ final class xajaxPluginManager
 	public function generateClientScript()
 	{
 
-		$sJsURI = $this->sJsURI;
+		$sJsURI = $this->getConfig()->getJavascriptURI();
 
 		$aJsFiles = $this->aJsFiles;
 
-		if ($sJsURI != '' && substr($sJsURI, - 1) != '/')
+		if ($sJsURI !== '' && substr($sJsURI, - 1) !== '/')
 		{
 			$sJsURI .= '/';
 		}
 
-		if ($this->bDeferScriptGeneration == true)
+		if ($this->getConfig()->isDeferScriptGeneration())
 		{
 			$sJsURI .= 'xajax_js/';
 		}
 
 		$aJsFiles[] = [$this->_getScriptFilename('xajax_js/xajax_core.js'), 'xajax'];
 
-		if (true === $this->bDebug)
+		if ($this->getConfig()->isDebug())
 		{
 			$aJsFiles[] = [$this->_getScriptFilename('xajax_js/xajax_debug.js'), 'xajax.debug'];
-		}
-
-		if (true === $this->bVerboseDebug)
-		{
-			$aJsFiles[] = [$this->_getScriptFilename('xajax_js/xajax_verbose.js'), 'xajax.debug.verbose'];
-		}
-
-		if (null !== $this->sLanguage)
-		{
-			$aJsFiles[] = [$this->_getScriptFilename('xajax_js/xajax_lang_' . $this->sLanguage . '.js'), 'xajax'];
+			if ($this->getConfig()->isVerbose())
+			{
+				$aJsFiles[] = [$this->_getScriptFilename('xajax_js/xajax_verbose.js'), 'xajax.debug.verbose'];
+			}
+			if ($this->getConfig()->isUseDebugLanguage())
+			{
+				$aJsFiles[] = [$this->_getScriptFilename('xajax_js/xajax_lang_' . $this->getConfig()->getLanguage() . '.js'),
+				               'xajax'];
+			}
 		}
 
 		$sCrLf = "\n";
 		echo $sCrLf;
 		echo '<';
 		echo 'script type="text/javascript" ';
-		echo $this->sDefer;
+		echo $this->getConfig()->isDeferScriptGeneration() ? 'defer ' : '';
 		echo 'charset="UTF-8">';
 		echo $sCrLf;
 		echo '/* <';
@@ -690,35 +682,35 @@ final class xajaxPluginManager
 		echo 'try { if (undefined == typeof xajax.config) xajax.config = {};  } catch (e) { xajax = {}; xajax.config = {};  };';
 		echo $sCrLf;
 		echo 'xajax.config.requestURI = "';
-		echo $this->getSRequestURI();
+		echo $this->getConfig()->getRequestURI();
 		echo '";';
 		echo $sCrLf;
 		echo 'xajax.config.statusMessages = ';
-		echo $this->sStatusMessages;
+		echo $this->getConfig()->isStatusMessages() ? 'true' : 'false';
 		echo ';';
 		echo $sCrLf;
 		echo 'xajax.config.waitCursor = ';
-		echo $this->sWaitCursor;
+		echo $this->getConfig()->isWaitCursor() ? 'true' : 'false';
 		echo ';';
 		echo $sCrLf;
 		echo 'xajax.config.version = "';
-		echo $this->sVersion;
+		echo $this->getConfig()->getVersion();
 		echo '";';
 		echo $sCrLf;
 		echo 'xajax.config.defaultMode = "';
-		echo $this->sDefaultMode;
+		echo $this->getConfig()->getDefaultMode();
 		echo '";';
 		echo $sCrLf;
 		echo 'xajax.config.defaultMethod = "';
-		echo $this->sDefaultMethod;
+		echo $this->getConfig()->getDefaultMethod();
 		echo '";';
 		echo $sCrLf;
 		echo 'xajax.config.JavaScriptURI = "';
-		echo $this->sJsURI;
+		echo $this->getConfig()->getJavascriptURI();
 		echo '";';
 		echo $sCrLf;
 		echo 'xajax.config.responseType = "';
-		echo $this->sResponseType;
+		echo $this->getConfig()->getResponseType();
 		echo '";';
 
 		if (false === (null === $this->nResponseQueueSize))
