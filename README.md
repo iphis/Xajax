@@ -1,10 +1,19 @@
 XAJAX
 
+next release(unofficial): 0.7.1 
+
+[Relaunch-Notices](Relaunch.md)
+
+New Demo
+
+[Script-Directories and WebPaths](examples/demo/scriptdirectories/scriptdirectories.md)
+
+
 current version: 0.6 beta1
 
 xajax is an open source PHP class library for easily creating powerful PHP-
-driven, web-based Ajax Applications. Using xajax, you can asynchronously call 
-PHP functions and update the content of your your webpage without reloading the 
+driven, web-based Ajax Applications. Using xajax, you can asynchronously call
+PHP functions and update the content of your your webpage without reloading the
 page.
 
 Project Website
@@ -13,7 +22,7 @@ http://xajax-project.org
 Online documentation & examples
 http://xajax-project.org/en/docs-tutorials/
 
-Community forums 
+Community forums
 http://community.xajax-project.org/
 
 Or chat with us
@@ -22,6 +31,7 @@ Or chat with us
 
 Copyright (c) 2006, Jared White & J. Max Wilson
 portions copyright (c) 2006-2012 by Joseph Woolley & Steffen Konerow
+portions copyright (c) 2012 by romacron@JProof
 
 
 xajax is released under the terms of the BSD license
