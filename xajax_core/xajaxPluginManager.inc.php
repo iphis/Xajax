@@ -383,94 +383,14 @@ final class xajaxPluginManager
 			$this->aConfigurable[$sKey]->configure($sName, $mValue);
 		}
 
-		if ('javascript URI' == $sName)
-		{
-			$this->sJsURI = $mValue;
-		}
-		else if ('javascript files' === $sName)
+		if ('javascript files' === $sName)
 		{
 			$this->aJsFiles = array_merge($this->aJsFiles, $mValue);
 		}
-		else if ('scriptDefferal' === $sName)
-		{
-			if (true === $mValue)
-			{
-				$this->sDefer = 'defer ';
-			}
-			else
-			{
-				$this->sDefer = '';
-			}
-		}
-		else if ('requestURI' === $sName)
-		{
-			$this->setSRequestURI((string) $mValue);
-		}
-		else if ('statusMessages' === $sName)
-		{
-			if (true === $mValue)
-			{
-				$this->sStatusMessages = 'true';
-			}
-			else
-			{
-				$this->sStatusMessages = 'false';
-			}
-		}
 
-		else if ('version' === $sName)
-		{
-			$this->sVersion = $mValue;
-		}
-		else if ('defaultMode' === $sName)
-		{
-			if ('asynchronous' === $mValue || 'synchronous' === $mValue)
-			{
-				$this->sDefaultMode = $mValue;
-			}
-		}
-		else if ('defaultMethod' === $sName)
-		{
-			if ('POST' === $mValue || 'GET' === $mValue)        // W3C: Method is case sensitive
-			{
-				$this->sDefaultMethod = $mValue;
-			}
-		}
-		else if ('debug' === $sName)
-		{
-			if (true === $mValue || false === $mValue)
-			{
-				$this->bDebug = $mValue;
-			}
-		}
-		else if ('verboseDebug' === $sName)
-		{
-			if (true === $mValue || false === $mValue)
-			{
-				$this->bVerboseDebug = $mValue;
-			}
-		}
 		else if ('scriptLoadTimeout' === $sName)
 		{
 			$this->nScriptLoadTimeout = $mValue;
-		}
-		else if ('useUncompressedScripts' === $sName)
-		{
-			if (true === $mValue || false === $mValue)
-			{
-				$this->bUseUncompressedScripts = $mValue;
-			}
-		}
-		else if ('deferScriptGeneration' === $sName)
-		{
-			if (true === $mValue || false === $mValue)
-			{
-				$this->bDeferScriptGeneration = $mValue;
-			}
-			else if ('deferred' === $mValue)
-			{
-				$this->bDeferScriptGeneration = $mValue;
-			}
 		}
 
 		else if ('responseQueueSize' === $sName)
@@ -480,10 +400,6 @@ final class xajaxPluginManager
 		else if ('debugOutputID' === $sName)
 		{
 			$this->sDebugOutputID = $mValue;
-		}
-		else if ('responseType' === $sName)
-		{
-			$this->setSResponseType($mValue);
 		}
 	}
 
