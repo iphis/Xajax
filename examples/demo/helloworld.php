@@ -30,13 +30,13 @@ require_once 'bootstrap.php';
 
 $xajax              = Factory::getInstance();
 $xajaxConfiguration = Xajax\Configuration::getInstance();
-$xajaxConfiguration->setDeferScriptGeneration(false);
+$xajaxConfiguration->setDeferScriptGeneration(true);
 /*
 	- enable deubgging if desired
 	- set the javascript uri (location of xajax js files)
 */
 //$xajax->configure('debug', true);
-$xajaxConfiguration->setJavascriptURI('../');
+$xajaxConfiguration->setJavascriptURI('../../');
 
 /*
 	Function: helloWorld

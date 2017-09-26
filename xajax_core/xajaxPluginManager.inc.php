@@ -104,14 +104,9 @@ final class xajaxPluginManager
 		$this->aProcessors             = [];
 		$this->aClientScriptGenerators = [];
 
-		$this->sJsURI   = '';
 		$this->aJsFiles = [];
 
 		$this->nScriptLoadTimeout = 2000;
-
-		$this->sLanguage          = null;
-		$this->nResponseQueueSize = null;
-		$this->sDebugOutputID     = null;
 	}
 
 	/*
@@ -146,17 +141,17 @@ final class xajaxPluginManager
 	*/
 	/**
 	 * @deprecated hook with an other Plugin mechanism
+	 * @todo       use spl priority queue
 	 *
 	 * @param $aFolders
 	 */
-	public function loadPlugins($aFolders)
+	public function loadPlugins(array $aFolders = [])
 	{
-
-		foreach ($aFolders as $sFolder)
+		if (0 < count($aFolders))
 		{
-			if (is_dir($sFolder))
+			foreach ($aFolders as $sFolder)
 			{
-				if ($handle = opendir($sFolder))
+				if (is_dir($sFolder) && $handle = opendir($sFolder))
 				{
 					while (!(false === ($sName = readdir($handle))))
 					{
@@ -534,6 +529,7 @@ final class xajaxPluginManager
 			$sJsURI .= '/';
 		}
 
+		// @todo check useless
 		if ($this->getConfig()->isDeferScriptGeneration())
 		{
 			$sJsURI .= 'xajax_js/';
@@ -606,7 +602,7 @@ final class xajaxPluginManager
 		ob_end_clean();
 
 		echo $jsContent;
-		
+
 		if (false === (null === $this->nResponseQueueSize))
 		{
 			echo $sCrLf;
@@ -684,9 +680,11 @@ final class xajaxPluginManager
 		if ($this->getConfig()->isDeferScriptGeneration())
 		{
 
+
 			$sHash = $this->generateHash();
 
 			$sOutFile = $sHash . '.js';
+			// @todo set/get deferred folder
 			$sOutPath = dirname(__DIR__) . '/xajax_js/deferred/';
 
 			if (!is_file($sOutPath . $sOutFile))
@@ -697,7 +695,6 @@ final class xajaxPluginManager
 
 				foreach ($aJsFiles as $aJsFile)
 				{
-
 					print file_get_contents($sInPath . $aJsFile[0]);
 				}
 				print $sCrLf;
@@ -723,10 +720,11 @@ final class xajaxPluginManager
 			echo '<';
 			echo 'script type="text/javascript" src="';
 			echo $sJsURI;
+			// @todo set/get deferred folder
 			echo 'deferred/';
 			echo $sOutFile;
 			echo '" ';
-			echo $this->sDefer;
+			echo $this->getConfig()->isDeferScriptGeneration() ? 'defer ' : '';
 			echo 'charset="UTF-8"><';
 			echo '/script>';
 			echo $sCrLf;
