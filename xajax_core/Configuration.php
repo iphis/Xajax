@@ -24,7 +24,7 @@ use Xajax\Configuration\Uri;
 use Xajax\Helper\Encoding;
 
 /**
- * Class Configuration
+ * Class Config
  *
  * @package Xajax
  */
@@ -230,7 +230,7 @@ class Configuration
 	/**
 	 * @param $name
 	 *
-	 * @example create an method isTestVar() then  isset(Configuration::getInstance()->testVar) will be checked by the method
+	 * @example create an method isTestVar() then  isset(Config::getInstance()->testVar) will be checked by the method
 	 * @return bool|mixed
 	 */
 	public function __isset($name)
@@ -330,7 +330,7 @@ class Configuration
 	}
 
 	/**
-	 * Configuration constructor.
+	 * Config constructor.
 	 */
 	protected function __construct()
 	{

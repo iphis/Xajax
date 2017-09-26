@@ -1,0 +1,19 @@
+# Created by .ignore support plugin (hsz.mobi)
+.idea/
+codecept.phar
+composer.lock
+composer.phar
+phpunit.phar
+test-php-7/
+tests/_data/
+tests/_output/
+tests/_support/
+tests/acceptance.suite.yml
+tests/acceptance/
+tests/functional.suite.yml
+tests/functional/
+vendor/
+/xajax_js/deferred/
+xajax_core/Plugins/Response/
+
+

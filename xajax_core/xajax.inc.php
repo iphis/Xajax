@@ -30,11 +30,11 @@
 	<xajaxResponse> classes.
 */
 
-use Xajax\Configuration;
+use Xajax\Configuration\Config;
 
 if (!defined('XAJAX_DEFAULT_CHAR_ENCODING'))
 {
-	/**@deprecated use the Xajax\Configuration::getDefaultCharacterEncoding* */
+	/**@deprecated use the Xajax\Config::getDefaultCharacterEncoding* */
 	define('XAJAX_DEFAULT_CHAR_ENCODING', 'utf-8');
 }
 
@@ -79,7 +79,8 @@ if (!defined('XAJAX_PROCESSING_EVENT_INVALID'))
 final class xajax
 {
 	// temporarily Helper Method
-	use Configuration\TRConfigure;
+	use Config;
+
 	/*
 		Array: aSettings
 		
@@ -90,7 +91,12 @@ final class xajax
 		It is advised that individual plugins store a local copy of the settings they
 		wish to track, however, settings are available via a reference to the <xajax> 
 		object using <xajax->getConfiguration>.
+
 	*/
+	/**
+	 * @deprecated jproof/xajax 0.7.2 use the Config Class
+	 * @see        Config
+	 **/
 	private $aSettings = [];
 	/*
 		Boolean: bErrorHandler
@@ -100,6 +106,10 @@ final class xajax
 		to the client as part of the response.  The client can then display the errors
 		to the user if so desired.
 	*/
+	/**
+	 * @var bool
+	 * @deprecated jproof/xajax 0.7.2 use the Config Class
+	 */
 	private $bErrorHandler;
 	/*
 		Array: aProcessingEvents
@@ -117,6 +127,10 @@ final class xajax
 		as part of the response.  Typically this would result in an error, however, 
 		a response processor on the client side could be designed to handle this condition.
 	*/
+	/**
+	 * @var bool
+	 * @deprecated jproof/xajax 0.7.2 use the Config Class
+	 */
 	private $bExitAllowed;
 	/*
 		Boolean: bCleanBuffer
@@ -125,6 +139,10 @@ final class xajax
 		to true allows <xajax> to clear out any pending output buffers so that the 
 		<xajaxResponse> is (virtually) the only output when handling a request.
 	*/
+	/**
+	 * @var bool
+	 * @deprecated jproof/xajax 0.7.2 use the Config Class
+	 */
 	private $bCleanBuffer;
 	/*
 		String: sLogFile
@@ -133,6 +151,10 @@ final class xajax
 		file on the server that you wish to have php error messages written to during
 		the processing of <xajax> requests.	
 	*/
+	/**
+	 * @var string
+	 * @deprecated jproof/xajax 0.7.2 use the Config Class
+	 */
 	private $sLogFile;
 	/*
 		String: sCoreIncludeOutput
@@ -182,7 +204,7 @@ final class xajax
 	private $objLanguageManager;
 	private $challengeResponse;
 	/**
-	 * Global Configuration Object
+	 * Global Config Object
 	 *
 	 * @since xajax 7.0.1
 	 * @var \Xajax\Configuration
@@ -464,7 +486,7 @@ final class xajax
 		Function: configure
 		
 		Call this function to set options that will effect the processing of 
-		xajax requests.  Configuration settings can be specific to the xajax
+		xajax requests.  Config settings can be specific to the xajax
 		Core, request processor plugins and response plugins.
 
 
@@ -482,7 +504,7 @@ final class xajax
 	 * @param $sName
 	 * @param $mValue
 	 *
-	 * @deprecated old Configuration use @see
+	 * @deprecated old Config use @see
 	 */
 	public function configure($sName, $mValue)
 	{
@@ -511,7 +533,7 @@ final class xajax
 		$this->getObjPluginManager()->configure($sName, $mValue);
 		$this->objResponseManager->configure($sName, $mValue);
 
-		Configuration::getInstance()->{$sName} = $mValue;
+		$this->getConfig()->{$sName} = $mValue;
 
 		$this->aSettings[$sName] = $mValue;
 	}
@@ -563,7 +585,7 @@ final class xajax
 	 * @return \xajaxPluginManager
 	 * @since 7.0
 	 */
-	public function getObjPluginManager(): \xajaxPluginManager
+	public function getObjPluginManager(): xajaxPluginManager
 	{
 		return $this->objPluginManager instanceof xajaxPluginManager ? $this->objPluginManager : $this->setObjPluginManager(xajaxPluginManager::getInstance());
 	}
@@ -577,7 +599,7 @@ final class xajax
 	 *
 	 * @return \xajaxPluginManager
 	 */
-	private function setObjPluginManager(\xajaxPluginManager $objPluginManager): \xajaxPluginManager
+	private function setObjPluginManager(xajaxPluginManager $objPluginManager): xajaxPluginManager
 	{
 		return $this->objPluginManager = $objPluginManager;
 	}

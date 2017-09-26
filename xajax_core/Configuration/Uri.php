@@ -19,7 +19,7 @@ namespace Xajax\Configuration;
 /**
  * Trait Uri
  *
- * @package Xajax\Configuration
+ * @package Xajax\Config
  */
 trait Uri
 {

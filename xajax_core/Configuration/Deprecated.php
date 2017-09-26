@@ -19,7 +19,7 @@ namespace Xajax\Configuration;
 /**
  * Trait Deprecated
  *
- * @package Xajax\Configuration
+ * @package Xajax\Config
  */
 trait Deprecated
 {

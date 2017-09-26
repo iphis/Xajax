@@ -19,12 +19,16 @@ namespace Xajax\Configuration;
 /**
  * Trait Language
  *
- * @package Xajax\Configuration
+ * @package Xajax\Config
  * @todo    check language folder
  * @todo    refacture languageManager or make an Vote
  */
 trait Language
 {
+	/**
+	 * @var bool
+	 */
+	protected $useDebugLanguage = false;
 	/**
 	 * @see \xajaxLanguageManager
 	 * @var string
@@ -45,5 +49,21 @@ trait Language
 	public function setLanguage(string $language)
 	{
 		$this->language = $language;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isUseDebugLanguage(): bool
+	{
+		return $this->useDebugLanguage;
+	}
+
+	/**
+	 * @param bool $useDebugLanguage
+	 */
+	public function setUseDebugLanguage(bool $useDebugLanguage = true)
+	{
+		$this->useDebugLanguage = $useDebugLanguage;
 	}
 }

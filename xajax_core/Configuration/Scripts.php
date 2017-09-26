@@ -19,7 +19,7 @@ namespace Xajax\Configuration;
 /**
  * Trait Scripts
  *
- * @package Xajax\Configuration
+ * @package Xajax\Config
  */
 trait Scripts
 {
