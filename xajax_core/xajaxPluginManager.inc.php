@@ -556,6 +556,8 @@ final class xajaxPluginManager
 		}
 
 		$sCrLf = "\n";
+		ob_start();
+
 		echo $sCrLf;
 		echo '<';
 		echo 'script type="text/javascript" ';
@@ -599,6 +601,12 @@ final class xajaxPluginManager
 		echo $this->getConfig()->getResponseType();
 		echo '";';
 
+		$jsContent = ob_get_contents();
+
+		ob_end_clean();
+
+		echo $jsContent;
+		
 		if (false === (null === $this->nResponseQueueSize))
 		{
 			echo $sCrLf;
