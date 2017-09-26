@@ -100,7 +100,7 @@ $reqShowOutput = $xajax->getPlugin('function')->registerRequest((array) 'showOut
 
 //$xajax->configure('responseType', 'JSON');
 $xajax->processRequest();
-$xajax->configure('javascript URI', '../');
+$xajax->getConfig()->setJavascriptURI('../');
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"

@@ -1,7 +1,5 @@
 <?php
-$xajax_core = dirname(dirname(__FILE__)) . '/xajax_core';
-
-require_once($xajax_core . '/xajax.inc.php');
+require_once __DIR__ . '/bootstrap.php';
 
 $xajax = new xajax();
 

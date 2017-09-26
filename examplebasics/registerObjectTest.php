@@ -16,7 +16,7 @@
     @copyright Copyright (c) 2005-2006 by Jared White & J. Max Wilson
     @license http://www.xajaxproject.org/bsd_license.txt BSD License
 */
-require_once("../xajax_core/xajax.inc.php");
+require_once __DIR__ . '/bootstrap.php';
 
 class myObjectTest
 {

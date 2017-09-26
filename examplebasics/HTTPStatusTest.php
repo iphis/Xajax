@@ -1,5 +1,5 @@
 <?php
-require_once("../xajax_core/xajax.inc.php");
+require_once __DIR__ . '/bootstrap.php';
 
 function returnStatus($number)
 {
