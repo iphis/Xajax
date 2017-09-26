@@ -87,31 +87,10 @@ final class xajaxPluginManager
 	 * @var array
 	 */
 	public  $aJsFiles = [];
-	private $sDefer;
-	/**
-	 * @var string
-	 */
-	private $sRequestURI;
-	private $sStatusMessages;
-	private $sWaitCursor;
-	private $sVersion;
-	private $sDefaultMode;
-	private $sDefaultMethod;
-	private $bDebug;
-	private $bVerboseDebug;
 	private $nScriptLoadTimeout;
-	/**@deprecated * */
-	private $bUseUncompressedScripts;
-	private $bDeferScriptGeneration;
 	private $sLanguage;
 	private $nResponseQueueSize;
 	private $sDebugOutputID;
-	/**
-	 * XML or JSOM
-	 *
-	 * @var string
-	 */
-	private $sResponseType;
 
 	private function __construct()
 	{
@@ -127,21 +106,12 @@ final class xajaxPluginManager
 
 		$this->sJsURI   = '';
 		$this->aJsFiles = [];
-		$this->sDefer   = '';
-		$this->setSRequestURI('');
-		$this->sStatusMessages         = 'false';
-		$this->sWaitCursor             = 'true';
-		$this->sVersion                = 'unknown';
-		$this->sDefaultMode            = 'asynchronous';
-		$this->sDefaultMethod          = 'POST';        // W3C: Method is case sensitive
-		$this->bDebug                  = false;
-		$this->bVerboseDebug           = false;
-		$this->nScriptLoadTimeout      = 2000;
-		$this->bUseUncompressedScripts = false;
-		$this->bDeferScriptGeneration  = false;
-		$this->sLanguage               = null;
-		$this->nResponseQueueSize      = null;
-		$this->sDebugOutputID          = null;
+
+		$this->nScriptLoadTimeout = 2000;
+
+		$this->sLanguage          = null;
+		$this->nResponseQueueSize = null;
+		$this->sDebugOutputID     = null;
 	}
 
 	/*
@@ -195,7 +165,7 @@ final class xajaxPluginManager
 						{
 							$sFileName  = substr($sName, 0, $nLength - 8);
 							$sExtension = substr($sName, $nLength - 8, 8);
-							if ('.inc.php' == $sExtension)
+							if ('.inc.php' === $sExtension)
 							{
 								require $sFolder . '/' . $sFileName . $sExtension;
 							}
@@ -637,7 +607,7 @@ final class xajaxPluginManager
 			echo ';';
 		}
 
-		if (true === $this->bDebug)
+		if (true === $this->getConfig()->isDebug())
 		{
 			if (false === (null === $this->sDebugOutputID))
 			{
@@ -703,7 +673,7 @@ final class xajaxPluginManager
 		echo '/script>';
 		echo $sCrLf;
 
-		if (true === $this->bDeferScriptGeneration)
+		if ($this->getConfig()->isDeferScriptGeneration())
 		{
 
 			$sHash = $this->generateHash();
@@ -760,7 +730,7 @@ final class xajaxPluginManager
 			echo $sCrLf;
 			echo '<';
 			echo 'script type="text/javascript" ';
-			echo $this->sDefer;
+			echo $this->getConfig()->isDeferScriptGeneration() ? 'defer ' : '';
 			echo 'charset="UTF-8">';
 			echo $sCrLf;
 			echo '/* <';
@@ -783,7 +753,7 @@ final class xajaxPluginManager
 				echo $sJsURI;
 				echo $aJsFile[0];
 				echo '" ';
-				echo $this->sDefer;
+				echo $this->getConfig()->isDeferScriptGeneration() ? 'defer ' : '';
 				echo 'charset="UTF-8"><';
 				echo '/script>';
 				echo $sCrLf;
@@ -866,39 +836,6 @@ final class xajaxPluginManager
 		}
 
 		return false;
-	}
-
-	/**
-	 * @deprecated use a global config
-	 * @return string
-	 */
-	public function getSResponseType(): string
-	{
-		return (string) $this->sResponseType;
-	}
-
-	/**
-	 * @param string $sResponseType
-	 */
-	public function setSResponseType($sResponseType = '')
-	{
-		$this->sResponseType = (string) $sResponseType;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getSRequestURI(): string
-	{
-		return (string) $this->sRequestURI;
-	}
-
-	/**
-	 * @param string $sRequestURI
-	 */
-	protected function setSRequestURI(string $sRequestURI = '')
-	{
-		$this->sRequestURI = $sRequestURI;
 	}
 
 	/**

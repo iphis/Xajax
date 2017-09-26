@@ -1032,7 +1032,7 @@ final class xajax
 			else
 			{
 				$aURL['scheme'] =
-				    (!empty($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) != 'off')
+				    (!empty($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off')
 					? 'https'
 					: 'http';
 			}
@@ -1081,7 +1081,7 @@ final class xajax
 
 		if (!empty($aURL['path']))
 		{
-			if (0 == strlen(basename($aURL['path'])))
+			if ('' === basename($aURL['path']))
 			{
 				unset($aURL['path']);
 			}
@@ -1144,25 +1144,25 @@ final class xajax
 		// Clean up
 		unset($aURL);
 
-		$aURL = explode("?", $sURL);
+		$aURL = explode('?', $sURL);
 
 		if (1 < count($aURL))
 		{
-			$aQueries = explode("&", $aURL[1]);
+			$aQueries = explode('&', $aURL[1]);
 
 			foreach ($aQueries as $sKey => $sQuery)
 			{
-				if ("xjxGenerate" == substr($sQuery, 0, 11))
+				if (0 === strpos($sQuery, 'xjxGenerate'))
 				{
 					unset($aQueries[$sKey]);
 				}
 			}
 
-			$sQueries = implode("&", $aQueries);
+			$sQueries = implode('&', $aQueries);
 
 			$aURL[1] = $sQueries;
 
-			$sURL = implode("?", $aURL);
+			$sURL = implode('?', $aURL);
 		}
 
 		return $sURL;
