@@ -6,7 +6,7 @@ next release(unofficial): 0.7.1
 
 New Demo
 
-[Filebrowser](examples/demo/filebrowser/filebrowser.md)
+[Filebrowser](examples/demo/Filebrowser/filebrowser.md)
 
 
 current version: 0.6 beta1
