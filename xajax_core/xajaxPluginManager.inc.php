@@ -87,31 +87,10 @@ final class xajaxPluginManager
 	 * @var array
 	 */
 	public  $aJsFiles = [];
-	private $sDefer;
-	/**
-	 * @var string
-	 */
-	private $sRequestURI;
-	private $sStatusMessages;
-	private $sWaitCursor;
-	private $sVersion;
-	private $sDefaultMode;
-	private $sDefaultMethod;
-	private $bDebug;
-	private $bVerboseDebug;
 	private $nScriptLoadTimeout;
-	/**@deprecated * */
-	private $bUseUncompressedScripts;
-	private $bDeferScriptGeneration;
 	private $sLanguage;
 	private $nResponseQueueSize;
 	private $sDebugOutputID;
-	/**
-	 * XML or JSOM
-	 *
-	 * @var string
-	 */
-	private $sResponseType;
 
 	private function __construct()
 	{
@@ -125,23 +104,9 @@ final class xajaxPluginManager
 		$this->aProcessors             = [];
 		$this->aClientScriptGenerators = [];
 
-		$this->sJsURI   = '';
 		$this->aJsFiles = [];
-		$this->sDefer   = '';
-		$this->setSRequestURI('');
-		$this->sStatusMessages         = 'false';
-		$this->sWaitCursor             = 'true';
-		$this->sVersion                = 'unknown';
-		$this->sDefaultMode            = 'asynchronous';
-		$this->sDefaultMethod          = 'POST';        // W3C: Method is case sensitive
-		$this->bDebug                  = false;
-		$this->bVerboseDebug           = false;
-		$this->nScriptLoadTimeout      = 2000;
-		$this->bUseUncompressedScripts = false;
-		$this->bDeferScriptGeneration  = false;
-		$this->sLanguage               = null;
-		$this->nResponseQueueSize      = null;
-		$this->sDebugOutputID          = null;
+
+		$this->nScriptLoadTimeout = 2000;
 	}
 
 	/*
@@ -176,17 +141,17 @@ final class xajaxPluginManager
 	*/
 	/**
 	 * @deprecated hook with an other Plugin mechanism
+	 * @todo       use spl priority queue
 	 *
 	 * @param $aFolders
 	 */
-	public function loadPlugins($aFolders)
+	public function loadPlugins(array $aFolders = [])
 	{
-
-		foreach ($aFolders as $sFolder)
+		if (0 < count($aFolders))
 		{
-			if (is_dir($sFolder))
+			foreach ($aFolders as $sFolder)
 			{
-				if ($handle = opendir($sFolder))
+				if (is_dir($sFolder) && $handle = opendir($sFolder))
 				{
 					while (!(false === ($sName = readdir($handle))))
 					{
@@ -195,7 +160,7 @@ final class xajaxPluginManager
 						{
 							$sFileName  = substr($sName, 0, $nLength - 8);
 							$sExtension = substr($sName, $nLength - 8, 8);
-							if ('.inc.php' == $sExtension)
+							if ('.inc.php' === $sExtension)
 							{
 								require $sFolder . '/' . $sFileName . $sExtension;
 							}
@@ -383,94 +348,14 @@ final class xajaxPluginManager
 			$this->aConfigurable[$sKey]->configure($sName, $mValue);
 		}
 
-		if ('javascript URI' == $sName)
-		{
-			$this->sJsURI = $mValue;
-		}
-		else if ('javascript files' === $sName)
+		if ('javascript files' === $sName)
 		{
 			$this->aJsFiles = array_merge($this->aJsFiles, $mValue);
 		}
-		else if ('scriptDefferal' === $sName)
-		{
-			if (true === $mValue)
-			{
-				$this->sDefer = 'defer ';
-			}
-			else
-			{
-				$this->sDefer = '';
-			}
-		}
-		else if ('requestURI' === $sName)
-		{
-			$this->setSRequestURI((string) $mValue);
-		}
-		else if ('statusMessages' === $sName)
-		{
-			if (true === $mValue)
-			{
-				$this->sStatusMessages = 'true';
-			}
-			else
-			{
-				$this->sStatusMessages = 'false';
-			}
-		}
 
-		else if ('version' === $sName)
-		{
-			$this->sVersion = $mValue;
-		}
-		else if ('defaultMode' === $sName)
-		{
-			if ('asynchronous' === $mValue || 'synchronous' === $mValue)
-			{
-				$this->sDefaultMode = $mValue;
-			}
-		}
-		else if ('defaultMethod' === $sName)
-		{
-			if ('POST' === $mValue || 'GET' === $mValue)        // W3C: Method is case sensitive
-			{
-				$this->sDefaultMethod = $mValue;
-			}
-		}
-		else if ('debug' === $sName)
-		{
-			if (true === $mValue || false === $mValue)
-			{
-				$this->bDebug = $mValue;
-			}
-		}
-		else if ('verboseDebug' === $sName)
-		{
-			if (true === $mValue || false === $mValue)
-			{
-				$this->bVerboseDebug = $mValue;
-			}
-		}
 		else if ('scriptLoadTimeout' === $sName)
 		{
 			$this->nScriptLoadTimeout = $mValue;
-		}
-		else if ('useUncompressedScripts' === $sName)
-		{
-			if (true === $mValue || false === $mValue)
-			{
-				$this->bUseUncompressedScripts = $mValue;
-			}
-		}
-		else if ('deferScriptGeneration' === $sName)
-		{
-			if (true === $mValue || false === $mValue)
-			{
-				$this->bDeferScriptGeneration = $mValue;
-			}
-			else if ('deferred' === $mValue)
-			{
-				$this->bDeferScriptGeneration = $mValue;
-			}
 		}
 
 		else if ('responseQueueSize' === $sName)
@@ -480,10 +365,6 @@ final class xajaxPluginManager
 		else if ('debugOutputID' === $sName)
 		{
 			$this->sDebugOutputID = $mValue;
-		}
-		else if ('responseType' === $sName)
-		{
-			$this->setSResponseType($mValue);
 		}
 	}
 
@@ -648,6 +529,7 @@ final class xajaxPluginManager
 			$sJsURI .= '/';
 		}
 
+		// @todo check useless
 		if ($this->getConfig()->isDeferScriptGeneration())
 		{
 			$sJsURI .= 'xajax_js/';
@@ -670,6 +552,8 @@ final class xajaxPluginManager
 		}
 
 		$sCrLf = "\n";
+		ob_start();
+
 		echo $sCrLf;
 		echo '<';
 		echo 'script type="text/javascript" ';
@@ -713,6 +597,12 @@ final class xajaxPluginManager
 		echo $this->getConfig()->getResponseType();
 		echo '";';
 
+		$jsContent = ob_get_contents();
+
+		ob_end_clean();
+
+		echo $jsContent;
+
 		if (false === (null === $this->nResponseQueueSize))
 		{
 			echo $sCrLf;
@@ -721,7 +611,7 @@ final class xajaxPluginManager
 			echo ';';
 		}
 
-		if (true === $this->bDebug)
+		if (true === $this->getConfig()->isDebug())
 		{
 			if (false === (null === $this->sDebugOutputID))
 			{
@@ -787,12 +677,14 @@ final class xajaxPluginManager
 		echo '/script>';
 		echo $sCrLf;
 
-		if (true === $this->bDeferScriptGeneration)
+		if ($this->getConfig()->isDeferScriptGeneration())
 		{
+
 
 			$sHash = $this->generateHash();
 
 			$sOutFile = $sHash . '.js';
+			// @todo set/get deferred folder
 			$sOutPath = dirname(__DIR__) . '/xajax_js/deferred/';
 
 			if (!is_file($sOutPath . $sOutFile))
@@ -803,7 +695,6 @@ final class xajaxPluginManager
 
 				foreach ($aJsFiles as $aJsFile)
 				{
-
 					print file_get_contents($sInPath . $aJsFile[0]);
 				}
 				print $sCrLf;
@@ -829,10 +720,11 @@ final class xajaxPluginManager
 			echo '<';
 			echo 'script type="text/javascript" src="';
 			echo $sJsURI;
+			// @todo set/get deferred folder
 			echo 'deferred/';
 			echo $sOutFile;
 			echo '" ';
-			echo $this->sDefer;
+			echo $this->getConfig()->isDeferScriptGeneration() ? 'defer ' : '';
 			echo 'charset="UTF-8"><';
 			echo '/script>';
 			echo $sCrLf;
@@ -844,7 +736,7 @@ final class xajaxPluginManager
 			echo $sCrLf;
 			echo '<';
 			echo 'script type="text/javascript" ';
-			echo $this->sDefer;
+			echo $this->getConfig()->isDeferScriptGeneration() ? 'defer ' : '';
 			echo 'charset="UTF-8">';
 			echo $sCrLf;
 			echo '/* <';
@@ -867,7 +759,7 @@ final class xajaxPluginManager
 				echo $sJsURI;
 				echo $aJsFile[0];
 				echo '" ';
-				echo $this->sDefer;
+				echo $this->getConfig()->isDeferScriptGeneration() ? 'defer ' : '';
 				echo 'charset="UTF-8"><';
 				echo '/script>';
 				echo $sCrLf;
@@ -950,39 +842,6 @@ final class xajaxPluginManager
 		}
 
 		return false;
-	}
-
-	/**
-	 * @deprecated use a global config
-	 * @return string
-	 */
-	public function getSResponseType(): string
-	{
-		return (string) $this->sResponseType;
-	}
-
-	/**
-	 * @param string $sResponseType
-	 */
-	public function setSResponseType($sResponseType = '')
-	{
-		$this->sResponseType = (string) $sResponseType;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getSRequestURI(): string
-	{
-		return (string) $this->sRequestURI;
-	}
-
-	/**
-	 * @param string $sRequestURI
-	 */
-	protected function setSRequestURI(string $sRequestURI = '')
-	{
-		$this->sRequestURI = $sRequestURI;
 	}
 
 	/**

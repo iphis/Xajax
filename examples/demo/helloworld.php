@@ -28,14 +28,15 @@ use Xajax\Factory;
 
 require_once 'bootstrap.php';
 
-$xajax = Factory::getInstance();
-
+$xajax              = Factory::getInstance();
+$xajaxConfiguration = Xajax\Configuration::getInstance();
+$xajaxConfiguration->setDeferScriptGeneration(true);
 /*
 	- enable deubgging if desired
 	- set the javascript uri (location of xajax js files)
 */
 //$xajax->configure('debug', true);
-$xajax->configure('javascript URI', '../');
+$xajaxConfiguration->setJavascriptURI('../../');
 
 /*
 	Function: helloWorld

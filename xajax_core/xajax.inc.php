@@ -636,7 +636,7 @@ final class xajax
 		Ensure that an active session is available (primarily used
 		for storing challenge / response codes).
 	*/
-	private function verifySession()
+	private function verifySession(): bool
 	{
 		$sessionID = session_id();
 		if ($sessionID === '')
@@ -651,7 +651,7 @@ final class xajax
 		return true;
 	}
 
-	private function loadChallenges($sessionKey)
+	private function loadChallenges($sessionKey): array
 	{
 		$challenges = [];
 
@@ -673,7 +673,7 @@ final class xajax
 		$_SESSION[$sessionKey] = $challenges;
 	}
 
-	private function makeChallenge($algo, $value)
+	private function makeChallenge($algo, $value): string
 	{
 		// TODO: Move to configuration option
 		if (null === $algo)
@@ -947,6 +947,12 @@ final class xajax
 			to be compressed.
 		bAlways - (boolean):  Compress the file, even if it already exists.
 	*/
+	/**
+	 * @param null $sJsFullFilename
+	 * @param bool $bAlways
+	 *
+	 * @deprecated use an other place
+	 */
 	public function autoCompressJavascript($sJsFullFilename = null, $bAlways = false)
 	{
 		$sJsFile = 'xajax_js/xajax_core.js';
@@ -1005,6 +1011,10 @@ final class xajax
 
 		string : The URL of the current request.
 	*/
+	/**
+	 * @return string
+	 * @deprecated use an other place
+	 */
 	private function _detectURI(): string
 	{
 		$aURL = [];
@@ -1032,7 +1042,7 @@ final class xajax
 			else
 			{
 				$aURL['scheme'] =
-				    (!empty($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) != 'off')
+				    (!empty($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off')
 					? 'https'
 					: 'http';
 			}
@@ -1081,7 +1091,7 @@ final class xajax
 
 		if (!empty($aURL['path']))
 		{
-			if (0 == strlen(basename($aURL['path'])))
+			if ('' === basename($aURL['path']))
 			{
 				unset($aURL['path']);
 			}
@@ -1144,38 +1154,43 @@ final class xajax
 		// Clean up
 		unset($aURL);
 
-		$aURL = explode("?", $sURL);
+		$aURL = explode('?', $sURL);
 
 		if (1 < count($aURL))
 		{
-			$aQueries = explode("&", $aURL[1]);
+			$aQueries = explode('&', $aURL[1]);
 
 			foreach ($aQueries as $sKey => $sQuery)
 			{
-				if ("xjxGenerate" == substr($sQuery, 0, 11))
+				if (0 === strpos($sQuery, 'xjxGenerate'))
 				{
 					unset($aQueries[$sKey]);
 				}
 			}
 
-			$sQueries = implode("&", $aQueries);
+			$sQueries = implode('&', $aQueries);
 
 			$aURL[1] = $sQueries;
 
-			$sURL = implode("?", $aURL);
+			$sURL = implode('?', $aURL);
 		}
 
 		return $sURL;
 	}
 
+	/**
+	 * @param null $sFolder
+	 *
+	 * @deprecated use an other place
+	 */
 	private function _compressSelf($sFolder = null)
 	{
-		if (null == $sFolder)
+		if (null === $sFolder)
 		{
-			$sFolder = dirname(dirname(__FILE__));
+			$sFolder = dirname(__DIR__);
 		}
 
-		require_once(dirname(__FILE__) . '/xajaxCompress.inc.php');
+		require_once __DIR__ . '/xajaxCompress.inc.php';
 
 		if ($handle = opendir($sFolder))
 		{
@@ -1241,6 +1256,13 @@ final class xajax
 		}
 	}
 
+	/**
+	 * @param null $sFolder
+	 * @param bool $bWriteFile
+	 *
+	 * @return string
+	 * @deprecated use an other place
+	 */
 	public function _compile($sFolder = null, $bWriteFile = true): string
 	{
 		if (null === $sFolder)
