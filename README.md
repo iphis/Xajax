@@ -6,7 +6,7 @@ next release(unofficial): 0.7.1
 
 New Demo
 
-[Script-Directories and WebPaths](examples/demo/scriptdirectories/scriptdirectories.md)
+[Filebrowser](examples/demo/filebrowser/filebrowser.md)
 
 
 current version: 0.6 beta1

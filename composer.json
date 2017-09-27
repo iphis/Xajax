@@ -40,7 +40,8 @@
       "": "xajax_core/"
     },
     "psr-4": {
-      "Xajax\\": "xajax_core"
+      "Xajax\\": "xajax_core",
+      "Xajax\\Examples\\": "examples"
     },
     "files": [
       "xajax_core/xajax.inc.php"
