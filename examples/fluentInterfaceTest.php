@@ -1,37 +1,37 @@
 <?php
+
+use Xajax\Factory;
+
 require_once __DIR__ . '/bootstrap.php';
 
-$xajax = new xajax();
+$xajax = Factory::getInstance();
 
 function testFluentInterface()
 {
-	global $xajax;
-	return $xajax->getGlobalResponse()->alert("Here is an alert.")->assign("submittedDiv", "innerHTML", "Here is some <b>HTML text</b>.");
+
+	return Factory::getInstance()::getGlobalResponse()
+	              ->alert('Here is an alert.')
+	              ->assign('submittedDiv', 'innerHTML', 'Here is some <b>HTML text</b>.');
 }
 
-$xajax->register(XAJAX_FUNCTION, "testFluentInterface");
+$xajax->getPlugin('function')->registerRequest((array) 'testFluentInterface');
+
 $xajax->processRequest();
-$xajax->configure('javascript URI', '../');
+$xajax->getConfig()->setJavascriptURI('../');
 
 ?>
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-	"http://www.w3.org/TR/2000/REC-xhtml1-20000126/DTD/xhtml1-transitional.dtd">
+		"http://www.w3.org/TR/2000/REC-xhtml1-20000126/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<title>Fluent Interface Test | xajax Tests</title>
-
-	<?php $xajax->printJavascript("../") ?>
+	<?php $xajax->printJavascript('../') ?>
 </head>
-
 <body>
 <h2><a href="index.php">xajax Tests</a></h2>
-
 <h1>Fluent Interface Test (PHP 5+ only)</h1>
-
 <p>
 	<a href="#" onclick="xajax_testFluentInterface();return false;">Perform Test</a>
-
 <div id="submittedDiv">
 </div>
 </body>
