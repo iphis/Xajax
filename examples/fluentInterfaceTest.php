@@ -8,7 +8,6 @@ $xajax = Factory::getInstance();
 
 function testFluentInterface()
 {
-
 	return Factory::getInstance()::getGlobalResponse()
 	              ->alert('Here is an alert.')
 	              ->assign('submittedDiv', 'innerHTML', 'Here is some <b>HTML text</b>.');
@@ -29,7 +28,7 @@ $xajax->getConfig()->setJavascriptURI('../');
 </head>
 <body>
 <h2><a href="index.php">xajax Tests</a></h2>
-<h1>Fluent Interface Test (PHP 5+ only)</h1>
+<h1>Fluent Interface Test (PHP 7+ only)</h1>
 <p>
 	<a href="#" onclick="xajax_testFluentInterface();return false;">Perform Test</a>
 <div id="submittedDiv">
