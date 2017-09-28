@@ -63,7 +63,7 @@ trait Scripts
 	/**
 	 * @param bool $useUncompressedScripts
 	 */
-	public function setUseUncompressedScripts(bool $useUncompressedScripts = false)
+	public function setUseUncompressedScripts(bool $useUncompressedScripts = true)
 	{
 		$this->useUncompressedScripts = $useUncompressedScripts;
 	}
