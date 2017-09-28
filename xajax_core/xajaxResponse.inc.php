@@ -497,13 +497,14 @@ class xajaxResponse
 			'cmd'  => 'attr:ad',
 			'id'   => $sTarget,
 			'prop' => $sAttribute,
-		    ],
-		    $sData
+		    ], [
+			'value' => $sData,
+		    ]
 		);
 	}
 
 	/**
-	 * Remove an Attribute to an Html-Tag
+	 * Remove an Attribute from an Html-Tag
 	 *
 	 * @since 0.7.1
 	 *
@@ -516,34 +517,38 @@ class xajaxResponse
 	{
 		return $this->addCommand(
 		    [
-			'cmd'  => 'attr:ad',
-			'id'   => $sTarget,
-			'prop' => $sAttribute,
+		        'cmd'  => 'attr:re',
+		        'id'   => $sTarget,
+		        'prop' => $sAttribute,
 		    ],
 		    ''
 		);
 	}
 
 	/**
-	 * Remove an Attribute to an Html-Tag
+	 * Replace an Attribute with an other attribute
 	 *
-	 * @since 0.7.1
+	 * @example $objResponse->attrReplace('elementID','oldAttributeName','anValue','newAttributeName');
+	 * @since   0.7.1
 	 *
 	 * @param string $sTarget
 	 * @param string $sAttribute
+	 * @param string $newAttribute
 	 * @param string $sData
 	 *
 	 * @return \xajaxResponse
 	 */
-	public function attrReplace($sTarget = '', $sAttribute = '', $sData = ''): \xajaxResponse
+	public function attrReplace($sTarget = '', $sAttribute = '', $newAttribute = '', $sData = ''): \xajaxResponse
 	{
 		return $this->addCommand(
 		    [
-			'cmd'  => 'attr:ad',
-			'id'   => $sTarget,
-			'prop' => $sAttribute,
-		    ],
-		    $sData
+		        'cmd'  => 'attr:rp',
+		        'id'   => $sTarget,
+		        'prop' => $sAttribute,
+
+		    ], [
+		        'new'   => $newAttribute,
+		        'value' => $sData]
 		);
 	}
 

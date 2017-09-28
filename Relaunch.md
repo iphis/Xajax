@@ -16,12 +16,10 @@ Minified files are the files without comment intended for live operation
 Files without "min" are the annotated files.
 
 ```php
-
 /**
 * @since 0.7.1 enable the uncompressed files
 **/
 $xajax->getConfig()->setUseUncompressedScripts(true);
-
 ```
 
 
