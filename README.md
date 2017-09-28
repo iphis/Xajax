@@ -9,6 +9,10 @@ New Demo
 [Filebrowser](examples/demo/Filebrowser/filebrowser.md)
 
 
+New Response-Types:
+
+[Attribute](docs/methods.attr.md)
+
 current version: 0.6 beta1
 
 xajax is an open source PHP class library for easily creating powerful PHP-

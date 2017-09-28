@@ -499,11 +499,18 @@ final class xajaxPluginManager
 		string - The filename as it should be specified in the script tags
 		on the browser.
 	*/
-	private function _getScriptFilename($sFilename)
+	/**
+	 * Getting the minified or regular js-filename
+	 *
+	 * @param $sFilename
+	 *
+	 * @return string
+	 */
+	private function _getScriptFilename(string $sFilename = ''): string
 	{
-		if ($this->getConfig()->isUseUncompressedScripts())
+		if (false === $this->getConfig()->isUseUncompressedScripts())
 		{
-			return str_replace('.js', '_uncompressed.js', $sFilename);
+			return str_replace('.js', '.min.js', $sFilename);
 		}
 
 		return $sFilename;
