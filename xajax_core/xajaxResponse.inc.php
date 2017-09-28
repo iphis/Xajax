@@ -479,6 +479,74 @@ class xajaxResponse
 		);
 	}
 
+	/**
+	 * Add an Attribute to an Html-Tag
+	 *
+	 * @since 0.7.1
+	 *
+	 * @param string $sTarget
+	 * @param string $sAttribute
+	 * @param string $sData
+	 *
+	 * @return \xajaxResponse
+	 */
+	public function attrAdd($sTarget = '', $sAttribute = '', $sData = ''): \xajaxResponse
+	{
+		return $this->addCommand(
+		    [
+			'cmd'  => 'attr:ad',
+			'id'   => $sTarget,
+			'prop' => $sAttribute,
+		    ],
+		    $sData
+		);
+	}
+
+	/**
+	 * Remove an Attribute to an Html-Tag
+	 *
+	 * @since 0.7.1
+	 *
+	 * @param string $sTarget
+	 * @param string $sAttribute
+	 *
+	 * @return \xajaxResponse
+	 */
+	public function attrRemove($sTarget = '', $sAttribute = ''): \xajaxResponse
+	{
+		return $this->addCommand(
+		    [
+			'cmd'  => 'attr:ad',
+			'id'   => $sTarget,
+			'prop' => $sAttribute,
+		    ],
+		    ''
+		);
+	}
+
+	/**
+	 * Remove an Attribute to an Html-Tag
+	 *
+	 * @since 0.7.1
+	 *
+	 * @param string $sTarget
+	 * @param string $sAttribute
+	 * @param string $sData
+	 *
+	 * @return \xajaxResponse
+	 */
+	public function attrReplace($sTarget = '', $sAttribute = '', $sData = ''): \xajaxResponse
+	{
+		return $this->addCommand(
+		    [
+			'cmd'  => 'attr:ad',
+			'id'   => $sTarget,
+			'prop' => $sAttribute,
+		    ],
+		    $sData
+		);
+	}
+
 	/*
 		Function: contextAssign
 		

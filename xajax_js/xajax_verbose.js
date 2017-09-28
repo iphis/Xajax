@@ -20,9 +20,9 @@
 
 try {
 	if ('undefined' == typeof xajax)
-		throw { name: 'SequenceError', message: 'Error: xajax core was not detected, verbose module disabled.' }
+		throw {name: 'SequenceError', message: 'Error: xajax core was not detected, verbose module disabled.'};
 	if ('undefined' == typeof xajax.debug)
-		throw { name: 'SequenceError', message: 'Error: xajax debugger was not detected, verbose module disabled.' }
+		throw {name: 'SequenceError', message: 'Error: xajax debugger was not detected, verbose module disabled.'};
 	
 	/*
 		Class: xajax.debug.verbose
@@ -30,7 +30,7 @@ try {
 		Provide a high level of detail which can be used to debug hard to find
 		problems.
 	*/
-	xajax.debug.verbose = {}
+	xajax.debug.verbose = {};
 
 	/*
 		Function: xajax.debug.verbose.expandObject
@@ -73,7 +73,7 @@ try {
 				return t;
 			} else return '[Object]';
 		} else return '"' + obj + '"';
-	}
+	};
 	
 	/*
 		Function: xajax.debug.verbose.makeFunction
@@ -131,7 +131,7 @@ try {
 			
 			return returnValue;
 		}
-	}
+	};
 	
 	/*
 		Function: xajax.debug.verbose.hook
@@ -151,7 +151,7 @@ try {
 				x[m] = xajax.debug.verbose.makeFunction(x[m], base + m);
 			}
 		}
-	}
+	};
 	
 	xajax.debug.verbose.hook(xajax, 'xajax.');
 	xajax.debug.verbose.hook(xajax.callback, 'xajax.callback.');

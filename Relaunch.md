@@ -7,6 +7,23 @@ Current development xajax 0.7.1
 * UTF-8
 * remove procedurally "php-echo" inside Scripts
 
+Changes
+
+Javascript-Structure:
+
+Files with the extensions' *_uncompressed. js' have been removed.
+Minified files are the files without comment intended for live operation
+Files without "min" are the annotated files.
+
+```php
+
+/**
+* @since 0.7.1 enable the uncompressed files
+**/
+$xajax->getConfig()->setUseUncompressedScripts(true);
+
+```
+
 
 todo
 * update modern js

@@ -16,7 +16,7 @@
 	@package xajax
 	@version $Id: xajax_debug_uncompressed.js 327 2007-02-28 16:55:26Z calltoconstruct $
 	@copyright Copyright (c) 2005-2007 by Jared White & J. Max Wilson
-	@copyright Copyright (c) 2008-2010 by Joseph Woolley, Steffen Konerow, Jared White  & J. Max Wilson
+	@copyright Copyright (c) 2008-2009 by Joseph Woolley, Steffen Konerow, Jared White  & J. Max Wilson
 	@license http://www.xajaxproject.org/bsd_license.txt BSD License
 */
 
@@ -30,10 +30,10 @@ try
 		a secondary browser window or alert messages as necessary.
 	*/
 	if ('undefined' == typeof xajax)
-		throw { name: 'SequenceError', message: 'Error: xajax core was not detected, debug module disabled.' }
+		throw {name: 'SequenceError', message: 'Error: xajax core was not detected, debug module disabled.'};
 		
 	if ('undefined' == typeof xajax.debug)
-		xajax.debug = {}
+		xajax.debug = {};
 
 	/*
 		String: xajax.debug.workId
@@ -176,7 +176,7 @@ try
 			return msg;
 		}
 		return 'An unknown error has occurred.';
-	}
+	};
 
 	/*
 		Function: xajax.debug.writeMessage
@@ -237,7 +237,7 @@ try
 			if (text.length > 1000) text = text.substr(0,1000) + xajax.debug.text[102];
 			alert(xajax.debug.text[102] + text);
 		}
-	}
+	};
 
 	/*
 		Function: xajax.debug.prepareDebugText
@@ -265,17 +265,17 @@ try
 					haystack += segments[i];
 				}
 				return haystack;
-			}
+			};
 			xajax.debug.prepareDebugText = function(text) {
 				text = xajax.debug.stringReplace(text, '&', '&amp;');
 				text = xajax.debug.stringReplace(text, '<', '&lt;');
 				text = xajax.debug.stringReplace(text, '>', '&gt;');
 				text = xajax.debug.stringReplace(text, '\n', '<br />');
 				return text;
-			}
+			};
 			xajax.debug.prepareDebugText(text);
 		}
-	}
+	};
 
 	/*
 		Function: xajax.debug.executeCommand
@@ -312,7 +312,7 @@ try
 			xajax.debug.writeMessage(msg, xajax.debug.text[101], 'errorText');
 		}
 		return true;
-	}
+	};
 
 	/*
 		Function: xajax.parseAttributes
@@ -338,7 +338,7 @@ try
 			msg += '\n';
 			xajax.debug.writeMessage(msg, xajax.debug.text[101], 'errorText');
 		}
-	}
+	};
 
 	xajax.debug.commandHandler = xajax.command.handler.unregister('dbg');
 	xajax.command.handler.register('dbg', function(args) {
@@ -374,7 +374,7 @@ try
 			xajax.debug.writeMessage(msg, xajax.debug.text[100], 'warningText');
 		}
 		return returnValue;
-	}
+	};
 
 	/*
 		Function: xajax.tools._objectToXML
@@ -416,7 +416,7 @@ try
 			xajax.debug.writeMessage(msg, xajax.debug.text[101], 'errorText');
 		}
 		return '';
-	}
+	};
 
 	/*
 		Function: xajax._internalSend
@@ -445,7 +445,7 @@ try
 			xajax.debug.writeMessage(msg, xajax.debug.text[101], 'errorText');
 			throw e;
 		}
-	}
+	};
 
 	/*
 		Function: xajax.submitRequest
@@ -491,7 +491,7 @@ try
 			if (0 < oRequest.retry)
 				throw e;
 		}
-	}
+	};
 
 	/*
 		Function: xajax.initializeRequest
@@ -515,7 +515,7 @@ try
 			xajax.debug.writeMessage(msg, xajax.debug.text[101], 'errorText');
 			throw e;
 		}
-	}
+	};
 
 	/*
 		Function: xajax.processParameters
@@ -546,7 +546,7 @@ try
 			xajax.debug.writeMessage(msg, xajax.debug.text[101], 'errorText');
 			throw e;
 		}
-	}
+	};
 
 	/*
 		Function: xajax.prepareRequest
@@ -570,7 +570,7 @@ try
 			xajax.debug.writeMessage(msg, xajax.debug.text[101], 'errorText');
 			throw e;
 		}
-	}
+	};
 
 	/*
 		Function: xajax.call
@@ -592,7 +592,7 @@ try
 				throw { code: 10009 };
 			
 			var functionName = arguments[0];
-			var oOptions = {}
+			var oOptions = {};
 			if (1 < numArgs)
 				oOptions = arguments[1];
 			
@@ -606,7 +606,7 @@ try
 			xajax.debug.writeMessage(msg, xajax.debug.text[101], 'errorText');
 			throw e;
 		}
-	}
+	};
 
 	/*
 		Function: xajax.request
@@ -628,7 +628,7 @@ try
 				throw { code: 10010 };
 			
 			var oFunction = arguments[0];
-			var oOptions = {}
+			var oOptions = {};
 			if (1 < numArgs)
 				oOptions = arguments[1];
 			
@@ -642,7 +642,7 @@ try
 			xajax.debug.writeMessage(msg, xajax.debug.text[101], 'errorText');
 			throw e;
 		}
-	}
+	};
 
 	/*
 		Function: xajax.getResponseProcessor
@@ -680,7 +680,7 @@ try
 			xajax.debug.writeMessage(msg, xajax.debug.text[101], 'errorText');
 			throw e;
 		}
-	}
+	};
 
 	/*
 		Function: xajax.responseReceived
@@ -743,7 +743,7 @@ try
 		}
 		
 		return oRet;
-	}
+	};
 
 	/*
 		Function: xajax.completeResponse
@@ -771,7 +771,7 @@ try
 			xajax.debug.writeMessage(msg, xajax.debug.text[101], 'errorText');
 			throw e;
 		}
-	}
+	};
 
 	/*
 		Function: xajax.tools.getRequestObject
@@ -797,7 +797,7 @@ try
 			xajax.debug.writeMessage(msg, xajax.debug.text[101], 'errorText');
 			throw e;
 		}
-	}
+	};
 
 	/*
 		Function: xajax.dom.assign
@@ -869,7 +869,7 @@ try
 		- <xajax.$>
 		- <xajax.getFormValues>
 	*/
-	xjx = {}
+	xjx = {};
 
 	xjx.$ = xajax.tools.$;
 	xjx.getFormValues = xajax.tools.getFormValues;
