@@ -77,7 +77,7 @@ class xajaxEventPlugin extends xajaxRequestPlugin implements RequestIface
 	/*
 		Function: xajaxEventPlugin
 	*/
-	function xajaxEventPlugin()
+	function __construct()
 	{
 		$this->aEvents = [];
 
