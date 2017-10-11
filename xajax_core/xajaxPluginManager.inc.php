@@ -691,8 +691,7 @@ final class xajaxPluginManager
 			$sHash = $this->generateHash();
 
 			$sOutFile = $sHash . '.js';
-			// @todo set/get deferred folder
-			$sOutPath = dirname(__DIR__) . '/xajax_js/deferred/';
+			$sOutPath = $this->getConfig()->getDeferScriptFilesystemFolder();
 
 			if (!is_file($sOutPath . $sOutFile))
 			{
@@ -727,8 +726,7 @@ final class xajaxPluginManager
 			echo '<';
 			echo 'script type="text/javascript" src="';
 			echo $sJsURI;
-			// @todo set/get deferred folder
-			echo 'deferred/';
+			echo $this->getConfig()->getDeferScriptBasePath();
 			echo $sOutFile;
 			echo '" ';
 			echo $this->getConfig()->isDeferScriptGeneration() ? 'defer ' : '';

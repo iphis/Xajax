@@ -23,96 +23,141 @@ namespace Xajax\Configuration;
  */
 trait Scripts
 {
-	/**
-	 * Uncompressed Javascript if exists
-	 *
-	 * @var bool
-	 */
-	protected $useUncompressedScripts = false;
-	/**
-	 * JS
-	 * true - xajax should update the status bar during a request
-	 * false - xajax should not display the status of the request
-	 *
-	 * @var bool
-	 */
-	protected $statusMessages = false;
-	/**
-	 * true - xajax should display a wait cursor when making a request
-	 * false - xajax should not show a wait cursor during a request
-	 *
-	 * @var bool
-	 */
-	protected $waitCursor = true;
-	/**
-	 * A flag that indicates whether
-	 * script deferral is in effect or not
-	 *
-	 * @var bool
-	 */
-	protected $deferScriptGeneration = true;
+    /**
+     * Uncompressed Javascript if exists
+     *
+     * @var bool
+     */
+    protected $useUncompressedScripts = false;
 
-	/**
-	 * @return bool
-	 */
-	public function isUseUncompressedScripts(): bool
-	{
-		return $this->useUncompressedScripts;
-	}
+    /**
+     * JS
+     * true - xajax should update the status bar during a request
+     * false - xajax should not display the status of the request
+     *
+     * @var bool
+     */
+    protected $statusMessages = false;
 
-	/**
-	 * @param bool $useUncompressedScripts
-	 */
-	public function setUseUncompressedScripts(bool $useUncompressedScripts = true)
-	{
-		$this->useUncompressedScripts = $useUncompressedScripts;
-	}
+    /**
+     * true - xajax should display a wait cursor when making a request
+     * false - xajax should not show a wait cursor during a request
+     *
+     * @var bool
+     */
+    protected $waitCursor = true;
 
-	/**
-	 * @return bool
-	 */
-	public function isStatusMessages(): bool
-	{
-		return $this->statusMessages;
-	}
+    /**
+     * A flag that indicates whether
+     * script deferral is in effect or not
+     *
+     * @var bool
+     */
+    protected $deferScriptGeneration = true;
 
-	/**
-	 * @param bool $statusMessages
-	 */
-	public function setStatusMessages(bool $statusMessages = false)
-	{
-		$this->statusMessages = $statusMessages;
-	}
+    /**
+     * @var string
+     */
+    protected $deferScriptFilesystemFolder = '';
 
-	/**
-	 * @return bool
-	 */
-	public function isWaitCursor(): bool
-	{
-		return $this->waitCursor;
-	}
+    /**
+     * @var string
+     */
+    protected $deferScriptBasePath = 'deferred/';
 
-	/**
-	 * @param bool $waitCursor
-	 */
-	public function setWaitCursor(bool $waitCursor = true)
-	{
-		$this->waitCursor = $waitCursor;
-	}
+    /**
+     * @return bool
+     */
+    public function isUseUncompressedScripts(): bool
+    {
+        return $this->useUncompressedScripts;
+    }
 
-	/**
-	 * @return bool
-	 */
-	public function isDeferScriptGeneration(): bool
-	{
-		return $this->deferScriptGeneration;
-	}
+    /**
+     * @param bool $useUncompressedScripts
+     */
+    public function setUseUncompressedScripts(bool $useUncompressedScripts = true)
+    {
+        $this->useUncompressedScripts = $useUncompressedScripts;
+    }
 
-	/**
-	 * @param bool $deferScriptGeneration
-	 */
-	public function setDeferScriptGeneration(bool $deferScriptGeneration = true)
-	{
-		$this->deferScriptGeneration = $deferScriptGeneration;
-	}
+    /**
+     * @return bool
+     */
+    public function isStatusMessages(): bool
+    {
+        return $this->statusMessages;
+    }
+
+    /**
+     * @param bool $statusMessages
+     */
+    public function setStatusMessages(bool $statusMessages = false)
+    {
+        $this->statusMessages = $statusMessages;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isWaitCursor(): bool
+    {
+        return $this->waitCursor;
+    }
+
+    /**
+     * @param bool $waitCursor
+     */
+    public function setWaitCursor(bool $waitCursor = true)
+    {
+        $this->waitCursor = $waitCursor;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDeferScriptGeneration(): bool
+    {
+        return $this->deferScriptGeneration;
+    }
+
+    /**
+     * @param bool $deferScriptGeneration
+     */
+    public function setDeferScriptGeneration(bool $deferScriptGeneration = true)
+    {
+        $this->deferScriptGeneration = $deferScriptGeneration;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDeferScriptFilesystemFolder(): string
+    {
+        return $this->deferScriptFilesystemFolder;
+    }
+
+    /**
+     * @param string $deferScriptFilesystemFolder
+     */
+    public function setDeferScriptFilesystemFolder(string $deferScriptFilesystemFolder)
+    {
+        $this->deferScriptFilesystemFolder = $deferScriptFilesystemFolder;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDeferScriptBasePath(): string
+    {
+        return $this->deferScriptBasePath;
+    }
+
+    /**
+     * @param string $deferScriptBasePath
+     */
+    public function setDeferScriptBasePath(string $deferScriptBasePath)
+    {
+        $this->deferScriptBasePath = $deferScriptBasePath;
+    }
 }
